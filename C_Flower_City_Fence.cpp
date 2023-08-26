@@ -17,7 +17,7 @@ void solve()
         v.push_back(m);
     }
 
-
+    
     if (v[0] > n)
     {
         cout << "NO" << endl;
@@ -42,7 +42,6 @@ void solve()
         }
     }
 
-
     i = 0;
     while (i < n)
     {
@@ -53,7 +52,6 @@ void solve()
         }
         i++;
     }
-
 
     if (c == 0 && v[0] <= n)
     {
