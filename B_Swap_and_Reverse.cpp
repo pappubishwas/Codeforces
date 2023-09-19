@@ -55,30 +55,32 @@ void solve()
     {
         s += st2[i];
     }
-    ll start = 0,c=0;
-    while ((start+k) <= n)
+    ll start = 0, c = 0;
+    while ((start + k) <= n)
     {
-        if ((start + k) <=n)
+        if ((start + k) <= n)
         {
             std::string temp, subStr = s.substr(start, k);
             temp = subStr;
             std::reverse(subStr.begin(), subStr.end());
-            //cout<<subStr<<" ";
-            if(subStr<temp){
+            // cout<<subStr<<" ";
+            if (subStr < temp)
+            {
                 // cout<<subStr<<" ";
-                
-                c=1;
-                string pre,next;
-                pre=s.substr(0, start);
-                next=s.substr((start+k),(n-start-k));
-                s=pre+subStr+next;
-                //cout<<s<<" ";
+
+                c = 1;
+                string pre, next;
+                pre = s.substr(0, start);
+                next = s.substr((start + k), (n - start - k));
+                s = pre + subStr + next;
+                // cout<<s<<" ";
             }
         }
-    
-        if((start+k)==n && c==1){
-            c=0;
-            start=-1;
+
+        if ((start + k) == n && c == 1)
+        {
+            c = 0;
+            start = -1;
         }
         start++;
     }
@@ -99,3 +101,4 @@ int main()
     }
     return 0;
 }
+
