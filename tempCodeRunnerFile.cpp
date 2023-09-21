@@ -1,40 +1,46 @@
+
+#include <bits/stdc++.h>
+#include<cstring>
+using namespace std;
+#define ll long long
+#define ld long double
+#define endl '\n'
 void solve() {
-    int n, m, c = 0;
-    cin >> n >> m;
-    string st[n];
-    
-    bool dp1 = false,dp2 = false, dp3 = false,dp4 = false;
-
-    for (int i = 0; i < n; i++) {
-        cin >> st[i];
+    ll n, k, count = 0, p, j = 0, i = 0;
+    cin >> n >> k;
+    vector<ll> v;
+    for (i = 0; i < n; i++) {
+        cin >> p;
+        v.push_back(p);
     }
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            if (st[j][i] == 'v' && !dp1) {
-                dp1 = true;
-                c++;
-                break;
-            } else if (st[j][i] == 'i' && dp1 && !dp2) {
-                dp2 = true;
-                c++;
-                break;
-            } else if (st[j][i] == 'k' && dp1 && dp2 && !dp3) {
-                dp3 = true;
-                c++;
-                break;
-            } else if (st[j][i] == 'a' && dp1 && dp2 && dp3) {
-                dp4 = true;
-                c++;
-                break;
-            }
+    ll l = 1, h = k + 1, mid = 1;
+    while (l <= h) {
+        mid = (l + h) / 2;
+        ll totalSum = 0;
+        for (i = 0; i < n; i++) {
+            if (mid < v[i])
+                totalSum += (v[i] - mid);
         }
-        if (c == 4)
+        if (totalSum == k) {
             break;
+        } else if (totalSum < k)
+            l = mid;
+        else
+            h = mid;
     }
+    cout << mid << endl;
+}
 
-    if (c == 4)
-        cout << "YES" << endl;
-    else
-        cout << "NO" << endl;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll t;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
 }
