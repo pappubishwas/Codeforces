@@ -6,14 +6,14 @@ using namespace std;
 #define ld long double
 #define endl '\n'
 void solve() {
-    ll n, k, count = 0, p, j = 0, i = 0;
+    ll n, k, p, i = 0;
     cin >> n >> k;
     vector<ll> v;
     for (i = 0; i < n; i++) {
         cin >> p;
         v.push_back(p);
     }
-    ll l = 1, h = k + 1, ans = 1,mid;
+    ll l = 1, h = k + *max_element (v.begin(), v.end()), ans = 1,mid;
     while (l <= h) {
         mid = (l + h) / 2;
         ll totalSum = 0;
@@ -21,11 +21,10 @@ void solve() {
             if (mid > v[i])
                 totalSum += (mid-v[i]);
         }
-        //       if (totalSum == k) {
-        //     ans=mid;
-        //     break;
-        // } else
-   if (totalSum <= k){
+              if (totalSum == k) {
+            ans=mid;
+            break;
+        } else if (totalSum < k){
             if(ans<mid)
             ans=mid;
             l = mid+1;
