@@ -11,6 +11,7 @@ void solve()
     while ((alice + bob < n))
     {
         // sum=alice+bob;
+        
         if (i % 2 == 0)
         {
             bob += t + t + 1;
