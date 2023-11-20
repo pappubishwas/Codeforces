@@ -6,24 +6,26 @@ using namespace std;
 #define endl '\n'
 void solve()
 {
-    int n;
+    int n,t;
     cin >> n;
-    vector<int> ans(n);
+    set<int> ans;
+    map<int,int>mp;
     for (int i = 0; i < n; i++)
     {
-        cin >> ans[i];
+        cin >> t;
+        ans.insert(t);
+        mp[t]++;
     }
-    int k = ans[0] + ans[1];
-    string s = "YES";
-    for (int i = 1; i < n; i++)
-    {
-        if (k != (ans[i] + ans[i - 1]))
-        {
-            s = "NO";
-            break;
-        }
+    if(ans.size()==1) cout<<"Yes"<<endl;
+    else if(ans.size()>2) cout<<"No"<<endl;
+    else{
+        auto it=ans.begin();
+        int a=mp[*it],b;
+        it++;
+        b=mp[*it];
+        if(abs(a-b)<=1) cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
     }
-    cout<<s<<endl;
 }
 int main()
 {
