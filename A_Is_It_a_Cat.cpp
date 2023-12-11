@@ -1,135 +1,42 @@
-// #include <bits/stdc++.h>
-// #include <iostream>
-// using namespace std;
-
-// void solve()
-// {
-// int i, n,c=0,m=0,e=0,o=0,w=0;
-// cin>>n;
-// string tan;
-// cin>>tan;
-
-// for ( i = 0; i < n; i++)
-// {
-//     if((tan[i]=='m' || tan[i]=='M') ){
-//         m=1;
-//             if((tan[i+1]=='m' || tan[i+1]=='M' || tan[i+1]=='e' || tan[i+1]=='E')){
-//                 continue;
-//             }else{
-//                 c=1;
-//                 break;
-//             }
-//     }
-//     if((tan[i]=='e' || tan[i]=='E')){
-//         e=1;
-//             if(tan[i+1]=='o' || tan[i+1]=='O' || tan[i+1]=='e' || tan[i+1]=='E'){
-//                 continue;
-//             }else{
-//                 c=1;
-//                 break;
-//             }
-//     }
-//     if((tan[i]=='o' || tan[i]=='O') ){
-//         o=1;
-//             if(tan[i+1]=='o' || tan[i+1]=='O' || tan[i+1]=='w' || tan[i+1]=='W'){
-//                 continue;
-//             }else{
-//                 c=1;
-//                 break;
-//             }
-//     }
-//     if((tan[i]=='w' || tan[i]=='W')){
-//         w=1;
-//             if((tan[i+1]=='w' || tan[i+1]=='W' ) || tan[i+1]=='\0'){
-//                 continue;
-//             }else{
-//                 c=1;
-//                 break;
-//             }
-//     }
-
-// }
-
-// if(c==1 || o==0 || m==0 || w==0 || e==0) cout<<"NO"<<endl;
-// else cout<<"YES"<<endl;
-
-    
-// }
-
-// int main()
-// {
-//     long long tc;
-//     cin >> tc;
-//     while (tc--)
-//     {
-//         solve();
-//     }
-//     return 0;
-// }
-
-
-
 
 
 #include <bits/stdc++.h>
 #include <iostream>
 using namespace std;
+#define f(i,a,b) for(long long i=a;i<b;i++)
+#define rf(i,a,b) for(long long i=a;i>=b;i--)
+#define ll long long
+#define mp make_pair
+#define pb push_back
+#define vll vector<long long>
+#define vvl vector<vll>
+#define pll pair<ll,ll>
+#define vc vector
+#define fi first
+#define se second
+#define lb lower_bound
+#define POW(a,b) (ll)(pow(a,b)+0.5)
+#define gcd __gcd
+#define to_lowercase(s) transform(s.begin(), s.end(), s.begin(), ::tolower)
+#define to_uppercase(s) transform(s.begin(), s.end(), s.begin(), ::toupper)
+
+
+
+
 
 void solve()
 {
-int i, n,c=0,m=0,e=0,o=0,w=0;
-cin>>n;
-string tan;
-cin>>tan;
-
-for(i=0;i<n;i++){
-    tan[i]=tolower(tan[i]);
-}
-for ( i = 0; i < n; i++)
-{
-    if(tan[i]=='m' ){
-        m=1;
-            if((tan[i+1]=='m' || tan[i+1]=='e')){
-                continue;
-            }else{
-                c=1;
-                break;
-            }
-    }
-    if(tan[i]=='e'){
-        e=1;
-            if(tan[i+1]=='o' || tan[i+1]=='O' || tan[i+1]=='e' || tan[i+1]=='E'){
-                continue;
-            }else{
-                c=1;
-                break;
-            }
-    }
-    if(tan[i]=='o'){
-        o=1;
-            if(tan[i+1]=='o' || tan[i+1]=='w'){
-                continue;
-            }else{
-                c=1;
-                break;
-            }
-    }
-    if((tan[i]=='w')){
-        w=1;
-            if((tan[i+1]=='w') || tan[i+1]=='\0'){
-                continue;
-            }else{
-                c=1;
-                break;
-            }
-    }
-
-}
-
-if(c==1 || o==0 || m==0 || w==0 || e==0) cout<<"NO"<<endl;
-else cout<<"YES"<<endl;
-
-    
+    int n;
+    cin>>n;
+    string s,y="";
+    cin>>s;
+    to_lowercase(s);
+    s+="#";
+    f(i,0,n)
+       if(s[i]!=s[i+1]) y+=s[i];
+       //cout<<y<<endl;
+     if(y=="meow") cout<<"YES"<<endl;
+     else cout<<"NO"<<endl; 
 }
 
 int main()
