@@ -63,18 +63,43 @@ int main()
    cin>>T;
    while(T--)
    {
-     ll n;
+     ll n,x;
      cin>>n;
-     string s;
-     cin>>s;
-     set<char> st;
-     ll ans=0;
-     f(i,0,n)
-     {
-        st.insert(s[i]);
-        ans+=st.size();
+     vll c,diff;
+     vector<pair<ll,char>> p;
+     f(i,0,n){
+        cin>>x;
+        p.push_back({x,'l'});
      }
-     cout<<ans<<endl;
+     f(i,0,n){
+        cin>>x;
+        p.push_back({x,'r'});
+     }
+     f(i,0,n){
+        cin>>x;
+        c.push_back(x);
+     }
+
+    sort(all(p));      
+    sort(all(c));
+
+    stack<ll> st;
+    ll sum=0;
+    f(i,0,2*n)
+    {
+        if(p[i].second=='l'){
+            st.push(p[i].first);
+        }else{
+            diff.push_back(p[i].first-st.top());
+            st.pop();
+        }
+    }   
+    sort(begin(diff),end(diff),greater<ll>());
+    f(i,0,n)
+    {
+        sum+=(diff[i]*c[i]);
+    }  
+    cout<<sum<<endl;
    }
     return 0;
 }

@@ -63,18 +63,21 @@ int main()
    cin>>T;
    while(T--)
    {
-     ll n;
+     ll n,x,y;
      cin>>n;
-     string s;
-     cin>>s;
-     set<char> st;
-     ll ans=0;
+     bool right=false,down=false,left=false,upper=false;
      f(i,0,n)
      {
-        st.insert(s[i]);
-        ans+=st.size();
+        cin>>x>>y;
+        if(x>0) right=true;
+        else if(x<0) left=true;
+
+        if(y>0) upper=true;
+        else if(y<0) down=true;
      }
-     cout<<ans<<endl;
+
+     if(upper && down && left && right) cout<<"NO"<<endl;
+     else cout<<"YES"<<endl;
    }
     return 0;
 }

@@ -65,16 +65,20 @@ int main()
    {
      ll n;
      cin>>n;
-     string s;
-     cin>>s;
-     set<char> st;
-     ll ans=0;
+     vll a(n);
      f(i,0,n)
+       cin>>a[i];
+     f(i,0,62)
      {
-        st.insert(s[i]);
-        ans+=st.size();
+        set<ll> x;
+        f(j,0,n)
+         x.insert(a[j]%(1ll<<i));
+        if(x.size()==2)
+        {
+            cout<<(1ll<<i)<<endl;
+            break;
+        }
      }
-     cout<<ans<<endl;
    }
     return 0;
 }
