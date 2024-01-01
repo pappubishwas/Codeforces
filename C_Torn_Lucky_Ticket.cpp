@@ -1,56 +1,96 @@
-#include <bits/stdc++.h>
-#include <cstring>
+#include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define ld long double
-#define endl '\n'
-bool checklucky(string s){
-    int n1=0,n2=0,i=0,j=s.size()-1;
-    while (i<j)
-    {
-        n1+=(s[i]-'0');
-        n2+=(s[j]-'0');
-        i++;
-        j--;
-    }
-    return n1==n2;
-}
-void solve()
-{
-    ll n, count=0;
-    cin>>n;
-    vector<string> odd;
-    vector<string> even;
-    string temp;
-    for (int i = 0; i < n; i++)
-    {
-        cin>>temp;
-        if(temp.size()%2==0) even.push_back(temp);
-        else odd.push_back(temp);
-    }
-    unordered_map<string,int> mp;
-    for(int i=0;i<even.size();i++){
-        for (int j = i+1; j <even.size() ; j++)
-        {
-            if(checklucky(even[i]+even[j])) count++;
-            if(checklucky(even[j]+even[i])) count++;
-        }
-    }
-    for(int i=0;i<odd.size();i++){
-        for (int j = i+1; j <odd.size() ; j++)
-        {
-            if(checklucky(odd[i]+odd[j])) count++;
-            if(checklucky(odd[j]+odd[i])) count++;
-        }
-    }
-    cout<<n+count<<endl;
-}
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-        solve();
 
+ll findSum(string &s){
+    ll c=0;
+    for(auto &d:s)
+    c+=(d-'0');
+    return c;
+}
+
+
+ll findPairs(vector<string> &v){
+    vector<vector<ll>> dp(11,vector<ll>(60,0));
+    ll ans = 0;
+    ll n=v.size();
+    
+     for(int i=0;i<n;i++){
+        string &s = v[i];
+        ll sum = findSum(s);
+        ll len = s.size();
+         dp[len][sum]++;
+     }
+    
+    
+    for(int i=0;i<n;i++){
+        string s=v[i];
+        ll sum = findSum(v[i]);
+        ll len = s.size();
+        
+        ans+= dp[len][sum];
+        
+        // considering it as prefix
+        ll removedSum = 0, r=0;
+        for(ll i=len-1;i>0;i--){
+            removedSum+=(s[i] - '0');
+            r++;
+            
+            ll left = len-r;
+            ll leftSum = sum - removedSum ;
+            
+            ll remainingRight = left - r;
+            ll remainingRightSum = leftSum - removedSum;
+            
+            if(remainingRight>=0 && remainingRightSum>=0  && ((left + remainingRight + r)%2==0))
+            ans+= dp[remainingRight][remainingRightSum];
+        }
+        
+        // considering it as suffix
+        removedSum = 0, r=0;
+        for(int i=0;i<len-1;i++){
+            removedSum+=(s[i] - '0');
+            r++;
+            
+            ll right = len-r;
+            ll rightSum = sum - removedSum;
+            
+            ll remainingLeft = right - r;
+            ll remainingLeftSum = rightSum - removedSum;
+            
+            if(remainingLeftSum>=0 && remainingLeft >=0 && ((right + remainingLeft + r)%2==0))
+            ans+= dp[remainingLeft][remainingLeftSum];
+        }
+
+        
+    }
+    // ans+=n;
+    return ans;
+}
+
+
+void solve(){
+    ll n;
+    cin>>n;
+    vector<string> v(n);
+
+    for(int i=0;i<n;i++){
+    cin>>v[i];
+    }
+    
+    ll ans = findPairs(v);
+    
+    
+    cout<<ans<<"\n";
+    
+}
+
+int main(){
+    
+    ll t=1;
+    // cin>>t;
+    while(t--)
+    solve();
+    
     return 0;
 }
