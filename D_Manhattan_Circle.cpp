@@ -57,42 +57,35 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 
 void solve() {
-    ll x ,y,n,m,k,q;
-    cin>>n;
-    
-    vll tan(n+1),temp(n);
-    for(ll i=0;i<n;i++){
-        cin>>tan[i];
+    long long n, m, sum = 0, count = 0, x = 0, y = 0;
+    cin >> n >> m;
+    vector<string> s;
+    for (int i = 0; i < n; i++) {
+        string t;
+        cin >> t;
+        s.push_back(t);
     }
-    bool flag=false;
-    for(ll i=0;i<n-1;i++){
-        ll gd=gcd(tan[i],tan[i+1]);
-        temp[i]=gd;
-    }
-    ll l=0,r=n-2;
-    for(int i=1;i<n;i++){
-        if(temp[i]<temp[i-1]) break;
-        l++;
-    }
-    for(int i=n-3;i>=0;i--){
-        if(temp[i]>temp[i+1]) break;
-        r--;
-    }
-    // debug(l);
-    // debug(r);
-    for(int i=0;i<n;i++){
-        if(i-2<=l && i+1>=r){
-            if(i==0 || i==n-1){
-                flag=true;
-                continue;
-            }
-            ll x=gcd(tan[i-1],tan[i+1]);
-            if((i-2<0 || x>=temp[i-2]) && (i+1>=n-1 || x<=temp[i+1])) flag=true;
+
+    for (int i = 0; i < n; i++) {
+        string t = s[i];
+        size_t pos = t.find('#');
+        if (pos != string::npos) {
+            y = pos + 1;
+            x = i + 1;
+            break;
         }
     }
 
-    if(flag) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    for (int i = n - 1; i >= 0; i--) {
+        string t = s[i];
+        size_t pos = t.find('#');
+        if (pos != string::npos) {
+            x += (i + 1);
+            break;
+        }
+    }
+
+    cout << (x / 2) << " " << y << endl;
 }
 
 int main() {

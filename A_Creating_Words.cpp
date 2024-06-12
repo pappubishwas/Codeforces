@@ -57,42 +57,12 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 
 void solve() {
-    ll x ,y,n,m,k,q;
-    cin>>n;
-    
-    vll tan(n+1),temp(n);
-    for(ll i=0;i<n;i++){
-        cin>>tan[i];
-    }
-    bool flag=false;
-    for(ll i=0;i<n-1;i++){
-        ll gd=gcd(tan[i],tan[i+1]);
-        temp[i]=gd;
-    }
-    ll l=0,r=n-2;
-    for(int i=1;i<n;i++){
-        if(temp[i]<temp[i-1]) break;
-        l++;
-    }
-    for(int i=n-3;i>=0;i--){
-        if(temp[i]>temp[i+1]) break;
-        r--;
-    }
-    // debug(l);
-    // debug(r);
-    for(int i=0;i<n;i++){
-        if(i-2<=l && i+1>=r){
-            if(i==0 || i==n-1){
-                flag=true;
-                continue;
-            }
-            ll x=gcd(tan[i-1],tan[i+1]);
-            if((i-2<0 || x>=temp[i-2]) && (i+1>=n-1 || x<=temp[i+1])) flag=true;
-        }
-    }
-
-    if(flag) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    string s1,s2;
+    cin>>s1>>s2;
+    char ch=s1[0];
+    s1[0]=s2[0];
+    s2[0]=ch;
+    cout<<s1<<" "<<s2<<endl;
 }
 
 int main() {

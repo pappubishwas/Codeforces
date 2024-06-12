@@ -55,44 +55,30 @@ template <class T> istream& operator>>(istream& in, vector<T> &v){for (auto& i :
 template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i : v) out << i << ' '; return out;}
 //--------------------------------------------------------------------------------------------------------------------------------------//
 const int mod = 1e9 + 7;
-
+long long powermod(long long x, long long y)
+{
+    long long res = 1;
+    x = x % mod;
+    if (x == 0)
+        return 0;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % mod;
+        y = y >> 1;
+        x = (x * x) % mod;
+    }
+    return res;
+}
 void solve() {
-    ll x ,y,n,m,k,q;
-    cin>>n;
-    
-    vll tan(n+1),temp(n);
-    for(ll i=0;i<n;i++){
-        cin>>tan[i];
-    }
-    bool flag=false;
-    for(ll i=0;i<n-1;i++){
-        ll gd=gcd(tan[i],tan[i+1]);
-        temp[i]=gd;
-    }
-    ll l=0,r=n-2;
-    for(int i=1;i<n;i++){
-        if(temp[i]<temp[i-1]) break;
-        l++;
-    }
-    for(int i=n-3;i>=0;i--){
-        if(temp[i]>temp[i+1]) break;
-        r--;
-    }
-    // debug(l);
-    // debug(r);
-    for(int i=0;i<n;i++){
-        if(i-2<=l && i+1>=r){
-            if(i==0 || i==n-1){
-                flag=true;
-                continue;
-            }
-            ll x=gcd(tan[i-1],tan[i+1]);
-            if((i-2<0 || x>=temp[i-2]) && (i+1>=n-1 || x<=temp[i+1])) flag=true;
-        }
-    }
-
-    if(flag) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    long long n, m, sum = 0, count = 0, x = 0, y = 0,z,k,ans=0,l,r;
+    cin >> l>>r>>k;
+    ll q=10/k;
+    if(10%k>0) q++;
+    ll le=powermod(q,l);
+    ll ri=powermod(q,r);
+    ll sub=((ri-le)%mod+mod)%mod;
+    cout<<sub<<endl;
 }
 
 int main() {

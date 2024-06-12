@@ -57,42 +57,21 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 
 void solve() {
-    ll x ,y,n,m,k,q;
+    ll n,sum=0,count=0;
     cin>>n;
-    
-    vll tan(n+1),temp(n);
-    for(ll i=0;i<n;i++){
+    vll tan(n+1);
+    set<ll>st;
+    for(int i=1;i<n+1;i++){
         cin>>tan[i];
-    }
-    bool flag=false;
-    for(ll i=0;i<n-1;i++){
-        ll gd=gcd(tan[i],tan[i+1]);
-        temp[i]=gd;
-    }
-    ll l=0,r=n-2;
-    for(int i=1;i<n;i++){
-        if(temp[i]<temp[i-1]) break;
-        l++;
-    }
-    for(int i=n-3;i>=0;i--){
-        if(temp[i]>temp[i+1]) break;
-        r--;
-    }
-    // debug(l);
-    // debug(r);
-    for(int i=0;i<n;i++){
-        if(i-2<=l && i+1>=r){
-            if(i==0 || i==n-1){
-                flag=true;
-                continue;
-            }
-            ll x=gcd(tan[i-1],tan[i+1]);
-            if((i-2<0 || x>=temp[i-2]) && (i+1>=n-1 || x<=temp[i+1])) flag=true;
-        }
+        st.insert(tan[i]);
+        sum=(sum+tan[i]);
+        if(sum%2==1) continue;
+        if(st.find(sum/2)!=st.end()) count++;
+
     }
 
-    if(flag) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    cout<<count<<endl;
+    
 }
 
 int main() {
