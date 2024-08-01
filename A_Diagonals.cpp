@@ -60,35 +60,21 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 void solve(){
     ll n,m,p;
     cin>>n>>m;
-    string s,c;
-    cin>>s;
-    vector<int> ind(m);
-    for (int i = 0; i < m; i++)
-    {
-        cin>>ind[i];
+    ll count=0;
+    if(m>=n){
+        count++;
+        m-=n;
+        n--;
     }
-    
-    vector<char> ct;
-    cin>>c;
-    for(int i=0;i<m;i++){
-        ct.push_back(c[i]);
+    while(m>0 && n>0){
+        count++;
+        m-=n;
+        if(m>0) count++;
+
+        m-=n;
+        n--;
     }
-    sort(all(ct));
-    sort(all(ind));
-    //debug(ct);
-    int i=0,j=0,k=m-1;
-    while(i<m){
-        int t=ind[i];
-        i++;
-        while (i<m && t==ind[i])
-        {
-            k--;
-            i++;
-        }
-        s[t-1]=ct[j];
-        j++;
-    }
-    cout<<s<<endl;
+    cout<<count<<endl;
 }
 
 
