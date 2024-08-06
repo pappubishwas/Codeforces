@@ -54,89 +54,49 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 template <class T> istream& operator>>(istream& in, vector<T> &v){for (auto& i : v) in >> i; return in;}
 template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i : v) out << i << ' '; return out;}
 //--------------------------------------------------------------------------------------------------------------------------------------//
-
-// const ll INF = LLONG_MAX;
-// ll dp[25][2][2];
-
-// ll find(int idx, string s, int flag, int n, ll total, int flag2) {
-//     if (idx >= n) {
-//         return flag == 0 ? INF : total;
-//     }
-
-//     if (dp[idx][flag][flag2] != -1) {
-//         return dp[idx][flag][flag2];
-//     }
-
-//     if (flag) {
-//         string temp = s.substr(idx, 1);
-//         ll add = find(idx + 1, s, flag, n, total + stoi(temp), 0);
-//         ll mull = find(idx + 1, s, flag, n, total * stoi(temp), 1);
-//         return dp[idx][flag][flag2] = min(add, mull);
-//     } else {
-//         string t1 = s.substr(idx, 1);
-//         ll oneadd = find(idx + 1, s, 0, n, total + stoi(t1), 0);
-//         ll onemull = find(idx + 1, s, 0, n, total * stoi(t1), 1);
-//         ll twoadd = INF, twomull = INF;
-//         ll res = min(oneadd, onemull);
-        
-//         if (idx < n - 1) {
-//             string t2 = s.substr(idx, 2);
-//             twoadd = find(idx + 2, s, 1, n, total + stoi(t2), 0);
-//             res = min(res, twoadd);
-//             twomull = find(idx + 2, s, 1, n, total * stoi(t2), 1);
-//             res = min(res, twomull);
-//         }
-        
-//         return dp[idx][flag][flag2] = res;
-//     }
-// }
+#define ll long long
+#define f(i, a, b) for (int i = a; i <= b; i++)
+#define ff(i, a, b) for (int i = a; i >= b; i--)
+#define mod 998244353
+#define MOD 1000000007
 
 void solve() {
-    ll n;
-    string s;
-    cin >> n;
-    cin >> s;
-    
-    if (n <= 2) {
-        cout << stoi(s) << endl;
-        return;
-    }
-    
-    // memset(dp, -1, sizeof(dp));
-    // string t1 = s.substr(0, 1);
-    // string t2 = s.substr(0, 2);
-    // ll one = find(1, s, 0, n, stoi(t1), 0);
-    // ll two = find(2, s, 1, n, stoi(t2), 0);
-
-    ll res=(1<<20);
-
-    for(int i=0;i+1<n;i++){
-        vll tan;
-
-        for(int j=0;j<n;j++){
-            if(i==j){
-                tan.push_back((s[j]-'0')*10+s[j+1]-'0');
-                j++;
-            }else{
-                tan.push_back(s[j]-'0');
-            }
-        }
-        //debug(tan);
-        ll sum=0;
-        for(auto x:tan){
-            if(x!=1){
-                sum+=x;
-            }
-            if(x==0){
-                res=0;
-                break;
-            }
-        }
-        if(res==0) break;
-        if(sum==0) sum=1;
-        res=min(res,sum);
-    }
-    cout << res << endl;
+ll n;
+   cin>>n;
+   vector<ll> v(n);
+   f(i,0,n-1) cin>>v[i];
+   ll c = v[0];
+   ll d = 0;
+   ll ans = 0;
+   f(i,1,n-1){
+     if(v[i]==1){
+      if(c>1) {
+         cout<<-1<<endl;
+         return;
+      }
+     }
+     if(c==1) {
+        c = v[i];
+        d = 0;
+        continue;
+     }
+     double vv = (double)log(v[i])/(double)log(c);
+     double nxt = (double)log(vv)/(double)log(2);
+     if(nxt>=d){
+        d = 0;
+        c = v[i];
+     }
+     else{
+       double p = (double)log(c)/(double)log(v[i]);
+       double val = (double)log(p)/(double)log(2) + d;
+       ll r = ceil(val);
+       ans+= r;
+       d = r;
+       c = v[i];
+     }
+   }
+ 
+   cout<<ans<<endl;  
 }
 
 int main() {

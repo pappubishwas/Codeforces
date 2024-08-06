@@ -55,88 +55,75 @@ template <class T> istream& operator>>(istream& in, vector<T> &v){for (auto& i :
 template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i : v) out << i << ' '; return out;}
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
-// const ll INF = LLONG_MAX;
-// ll dp[25][2][2];
-
-// ll find(int idx, string s, int flag, int n, ll total, int flag2) {
-//     if (idx >= n) {
-//         return flag == 0 ? INF : total;
-//     }
-
-//     if (dp[idx][flag][flag2] != -1) {
-//         return dp[idx][flag][flag2];
-//     }
-
-//     if (flag) {
-//         string temp = s.substr(idx, 1);
-//         ll add = find(idx + 1, s, flag, n, total + stoi(temp), 0);
-//         ll mull = find(idx + 1, s, flag, n, total * stoi(temp), 1);
-//         return dp[idx][flag][flag2] = min(add, mull);
-//     } else {
-//         string t1 = s.substr(idx, 1);
-//         ll oneadd = find(idx + 1, s, 0, n, total + stoi(t1), 0);
-//         ll onemull = find(idx + 1, s, 0, n, total * stoi(t1), 1);
-//         ll twoadd = INF, twomull = INF;
-//         ll res = min(oneadd, onemull);
-        
-//         if (idx < n - 1) {
-//             string t2 = s.substr(idx, 2);
-//             twoadd = find(idx + 2, s, 1, n, total + stoi(t2), 0);
-//             res = min(res, twoadd);
-//             twomull = find(idx + 2, s, 1, n, total * stoi(t2), 1);
-//             res = min(res, twomull);
-//         }
-        
-//         return dp[idx][flag][flag2] = res;
-//     }
-// }
 
 void solve() {
-    ll n;
-    string s;
-    cin >> n;
-    cin >> s;
-    
-    if (n <= 2) {
-        cout << stoi(s) << endl;
+    int n, k;
+    cin >> n >> k;
+    if(n > (int)2e5) {
+        cout << "Invalid input";
+    }
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin >> a[i];
+    map<int, vector<long long>> mp;
+    for(int i=0;i<n;i++) mp[a[i] % k].push_back(a[i]);
+    int odd = 0;
+    for(pair<int, vector<long long>> p : mp) if(p.second.size() % 2 != 0) odd++;
+    if((n % 2 == 0 && odd != 0) || (n % 2 != 0 && odd != 1)) {
+        cout << -1 << "\n";
         return;
     }
-    
-    // memset(dp, -1, sizeof(dp));
-    // string t1 = s.substr(0, 1);
-    // string t2 = s.substr(0, 2);
-    // ll one = find(1, s, 0, n, stoi(t1), 0);
-    // ll two = find(2, s, 1, n, stoi(t2), 0);
-
-    ll res=(1<<20);
-
-    for(int i=0;i+1<n;i++){
-        vll tan;
-
-        for(int j=0;j<n;j++){
-            if(i==j){
-                tan.push_back((s[j]-'0')*10+s[j+1]-'0');
-                j++;
-            }else{
-                tan.push_back(s[j]-'0');
+    long long ans = 0;
+    for(pair<int, vector<long long>> p : mp) {
+        sort(p.second.begin(), p.second.end());
+        if(p.second.size() % 2 == 0) {
+            for(int i=0;i<p.second.size();i+=2) ans += (p.second[i + 1] - p.second[i]) / k;
+        }
+        else {
+            map<long long, int> tp;
+            for(long long ele : p.second) tp[ele]++;
+            vector<long long> test;
+            for(pair<long long, int> pp : tp) if(pp.second % 2 != 0) test.push_back(pp.first);
+            if(test.size() > 1) {
+                if(test.size() % 2 == 0) {
+                    for(int i=0;i<test.size();i+=2) ans += (test[i + 1] - test[i]) / k;
+                }
+                else {
+                    vector<long long> aage(test.size(), 0);
+                    vector<long long> peeche(test.size(), 0);
+                    for(int i=test.size()-2;i>=0;i--) {
+                        aage[i] = test[i+1] - test[i];
+                        if(i + 2 < test.size()) aage[i] += aage[i + 2];
+                    }
+                    for(int i=1;i<test.size();i++) {
+                        peeche[i] = test[i] - test[i-1];
+                        if(i - 2 >= 0) peeche[i] += peeche[i - 2];
+                    }
+                    //debug(test);
+                    //debug(aage);
+                    //debug(peeche);
+                    long long fans = (int)1e18;
+                    for(int i=0;i<test.size();i++) {
+                        // if meko ith index nikalni hai
+                        long long cans = 0;
+                        int ahead_elements = test.size() - i - 1;
+                        int behind_elements = i;
+                        if(ahead_elements % 2 == 0) {
+                            if(i + 1 < test.size()) cans += (aage[i + 1]) / k;
+                            if(i - 1 >= 0) cans += (peeche[i - 1]) / k;
+                        }
+                        else {
+                            if(i + 2 < test.size()) cans += (aage[i + 2]) / k;
+                            if(i - 2 >= 0) cans += (peeche[i - 2]) / k;
+                            if(i + 1 < test.size() && i - 1 >= 0) cans += (test[i+1] - test[i-1]) / k;
+                        }
+                        fans = min(fans, cans);
+                    }
+                    ans += fans;
+                }
             }
         }
-        //debug(tan);
-        ll sum=0;
-        for(auto x:tan){
-            if(x!=1){
-                sum+=x;
-            }
-            if(x==0){
-                res=0;
-                break;
-            }
-        }
-        if(res==0) break;
-        if(sum==0) sum=1;
-        res=min(res,sum);
     }
-    cout << res << endl;
+    cout << ans << "\n";
 }
 
 int main() {

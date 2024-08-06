@@ -55,88 +55,112 @@ template <class T> istream& operator>>(istream& in, vector<T> &v){for (auto& i :
 template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i : v) out << i << ' '; return out;}
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
-// const ll INF = LLONG_MAX;
-// ll dp[25][2][2];
 
-// ll find(int idx, string s, int flag, int n, ll total, int flag2) {
-//     if (idx >= n) {
-//         return flag == 0 ? INF : total;
+
+// void solve(){
+//     ll n,m;
+//     cin>>n>>m;
+
+//     vector<vector<ll>> v(n,vector<ll>(2));
+//     for(ll i=0;i<n;i++){
+//         cin>>v[i][0];
 //     }
-
-//     if (dp[idx][flag][flag2] != -1) {
-//         return dp[idx][flag][flag2];
+//     for(ll i=0;i<n;i++){
+//         cin>>v[i][1];
 //     }
+//     sort(all(v));
+//     ll j=0, petal=0, ans=0;
+//     ll t1=v[0][0];
+//     f(i,1,n){
+//         ll t2=v[i][0];
 
-//     if (flag) {
-//         string temp = s.substr(idx, 1);
-//         ll add = find(idx + 1, s, flag, n, total + stoi(temp), 0);
-//         ll mull = find(idx + 1, s, flag, n, total * stoi(temp), 1);
-//         return dp[idx][flag][flag2] = min(add, mull);
-//     } else {
-//         string t1 = s.substr(idx, 1);
-//         ll oneadd = find(idx + 1, s, 0, n, total + stoi(t1), 0);
-//         ll onemull = find(idx + 1, s, 0, n, total * stoi(t1), 1);
-//         ll twoadd = INF, twomull = INF;
-//         ll res = min(oneadd, onemull);
-        
-//         if (idx < n - 1) {
-//             string t2 = s.substr(idx, 2);
-//             twoadd = find(idx + 2, s, 1, n, total + stoi(t2), 0);
-//             res = min(res, twoadd);
-//             twomull = find(idx + 2, s, 1, n, total * stoi(t2), 1);
-//             res = min(res, twomull);
+//         if(t2-t1>1){
+//             ll ct=(m/t1);
+//             if(ct>v[i-1][1]){
+//                 petal=v[i-1][1]*t1;
+//             }else{
+//                 petal=ct*t1;
+//             }
+//             ans=max(ans,petal);
+//         }else{
+//             ll extraone=v[i][1];
+//             ll totalcount=v[i-1][1]+v[i][1];
+
+//             ll ct=(m/t1);
+//             if(ct<totalcount){ 
+//                 petal=ct*t1;
+//             }else{
+//                 petal=totalcount*t1;
+//                 ll t=totalcount-v[i-1][1];
+//             }
+//             if(extraone+petal<=m) petal+=extraone;
+//             else petal=m;
+//             ans=max(ans,petal);
+//             //debug(v);
+//             debug(ans);
 //         }
-        
-//         return dp[idx][flag][flag2] = res;
+//         t1=t2;
 //     }
+//     cout<<ans<<endl;
 // }
 
+
+
 void solve() {
-    ll n;
-    string s;
-    cin >> n;
-    cin >> s;
+    int n;
+    long long m;
+    cin >> n >> m;
     
-    if (n <= 2) {
-        cout << stoi(s) << endl;
-        return;
+    vector<long long> a(n), b(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+    }
+    for (int i = 0; i < n; ++i) {
+        cin >> b[i];
     }
     
-    // memset(dp, -1, sizeof(dp));
-    // string t1 = s.substr(0, 1);
-    // string t2 = s.substr(0, 2);
-    // ll one = find(1, s, 0, n, stoi(t1), 0);
-    // ll two = find(2, s, 1, n, stoi(t2), 0);
-
-    ll res=(1<<20);
-
-    for(int i=0;i+1<n;i++){
-        vll tan;
-
-        for(int j=0;j<n;j++){
-            if(i==j){
-                tan.push_back((s[j]-'0')*10+s[j+1]-'0');
-                j++;
-            }else{
-                tan.push_back(s[j]-'0');
-            }
-        }
-        //debug(tan);
-        ll sum=0;
-        for(auto x:tan){
-            if(x!=1){
-                sum+=x;
-            }
-            if(x==0){
-                res=0;
-                break;
-            }
-        }
-        if(res==0) break;
-        if(sum==0) sum=1;
-        res=min(res,sum);
+    map<long long, long long> map;
+    for (int i = 0; i < n; ++i) {
+        map[a[i]] = b[i];
     }
-    cout << res << endl;
+    
+    long long ans = 0;
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        long long key = it->first;
+        long long c1 = it->second;
+        long long c2 = 0;
+        
+        auto next_it = it;
+        next_it++;
+        if(next_it->first != key + 1) next_it = map.end();
+        if (next_it != map.end()) {
+            c2 = next_it->second;
+        }
+        
+        long long take1 = min(c1, m / key);
+        long long rem_m = m - take1 * key;
+        long long take2 = 0;
+        
+        if (next_it != map.end()) {
+            take2 = min(c2, rem_m / (next_it->first));
+        }
+        
+        ans = max(ans, take1 * key + take2 * (next_it->first));
+        
+        // Consider moving items from take1 to take2
+        if (take1 > 0 && next_it != map.end()) {
+            long long left_ = c2 - take2;
+            long long left_m = rem_m - take2 * (next_it->first);
+            long long may_remove = min(min(take1, left_m), left_);
+            
+            take1 -= may_remove;
+            take2 += may_remove;
+            
+            ans = max(ans, take1 * key + take2 * (next_it->first));
+        }
+    }
+    
+    cout << ans << endl;
 }
 
 int main() {
