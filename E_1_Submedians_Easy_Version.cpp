@@ -17,7 +17,7 @@ pair<bool,pair<ll,ll>> check(vector<ll>&a,ll n,ll k,ll mid){
 
         if(prefixSum[i-(k-1)]<min_pre){
             min_pre=prefixSum[i-(k-1)];
-            min_pre_pos=i-(k-1)+1;
+            min_pre_pos=i-(k-1)+1;\
         }
     }
     return {false,{-1,-1}};
