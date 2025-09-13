@@ -1,1 +1,0 @@
-{"name":"Local: SegmentTreeBuildQuery","url":"d:\\ProgrammingFile\\codeforces\\SegmentTreeBuildQuery.cpp","tests":[{"id":1702969834278,"input":"10\n1 2 3 4 5 6 7 8 9 10\n3\n1 5\n4 9\n0 6","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\ProgrammingFile\\codeforces\\SegmentTreeBuildQuery.cpp","group":"local","local":true}
