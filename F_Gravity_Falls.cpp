@@ -61,32 +61,49 @@ void solve(){
     ll n;
     cin>>n;
     vector<vector<ll>> a(n);
-    map<ll,ll> freq, curr;
     for(int i=0;i<n;i++){
         cin>>k;
-        maxlen=max(maxlen,k);
-        a[i].push_back(k);
         for(int j=0;j<k;j++)
         {
             cin>>c;
             a[i].push_back(c);
         }
     }
-    vector<ll> prev;
-    for(int i=0;i<maxlen;i++){
-    vector<pair<ll,ll>> col;
-    for(int j=0;j<n;j++){
-        col.push_back({a[j][i+1],j});
-    }
-    sort(all(col));
-    if(prev.size()<2){
-        cout<<
-    }
-    for(auto x:col){
 
+    sort(a.begin(),a.end(), [](vector<ll> &x,vector<ll> &y){
+        return x.size() < y.size();
+    });
+
+    ll mxsz=a.back().size();
+    vector<ll> ans(mxsz,1e9);
+    vector<ll> edit;
+    edit.push_back(0);
+
+    for(auto &vi:a){
+        int k=vi.size();
+        for(int e=0;e<edit.size();e++){
+            int l=edit[e],r=(e+1 < edit.size()) ? edit[e+1] : k ;
+            bool replace=false;
+            for(int i=l;i<r;i++){
+                if(ans[i]<vi[i]) break;
+                if(ans[i] > vi[i]){
+                    replace=true;
+                    break;
+                }
+            }
+            if(replace){
+                for(int i=l;i<k;i++){
+                    ans[i]=vi[i];
+                }
+                while(edit.back()>l) edit.pop_back();
+                edit.push_back(k);
+                break;
+            }
+        }
     }
-    }
-    cout<<res<<endl;
+
+    for(int x: ans ) cout<<x<<" ";
+    cout<<endl;
 }
 
 int main()

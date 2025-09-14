@@ -54,47 +54,19 @@ template <class T> istream& operator>>(istream& in, vector<T> &v){for (auto& i :
 template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i : v) out << i << ' '; return out;}
 //--------------------------------------------------------------------------------------------------------------------------------------//
 const int mod = 1e9 + 7;
-const int MOD = 998244353;
-
-ll modPow(ll b,ll e){
-    ll res=1;
-    while(e>0){
-        if(e & 1) res=(res*b)%MOD;
-        b= (b*b) % MOD;
-        e >>=1;
-    }
-    return res;
-}
+// const int mod = 998244353;
 
 void solve(){
-    ll b,m,x,y,c,d,k,res=0;
-    ll n;
-    cin>>n;
-    vector<ll> p(n),q(n);
-    for(int i=0;i<n;i++) cin>>p[i];
-    for(int i=0;i<n;i++) cin>>q[i];
-    ll pmx=p[0],qmx=q[0],pidx=0,qidx=0;
-    cout<< (modPow(2,q[0]) + modPow(2,p[0]))%MOD<<" ";
-    for(int i=1;i<n;i++){
-        if(p[i]>pmx){
-            pmx=p[i];
-            pidx=i;
-        }
-        if(q[i]>qmx){
-            qmx=q[i];
-            qidx=i;
-        }
-        ll tp=p[i-qidx];
-        ll tq=q[i-pidx];
-        if(pmx>qmx || (pmx==qmx && tq>=tp)){
-            cout<< (modPow(2,pmx) + modPow(2,tq))%MOD<<" ";
-        }else{
-            
-            cout<< (modPow(2,tp) + modPow(2,qmx))%MOD<<" ";
-        }
+    ll k,res=0,n;
+    ll a,b,c,d;
+    cin>>a>>b>>c>>d;
+    ll mn=min(b,d);
+    if(a>=mn && c>=mn){
+        cout<<"Gellyfish";
+    }else{
+        cout<<"Flower";
     }
     cout<<endl;
-
 }
 
 int main()
