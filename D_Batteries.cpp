@@ -59,19 +59,22 @@ const int MOD = 998244353;
 void solve()
 {
     ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+    cin >> n;
+
+    for (int diff = 1; diff <= n/2 ; diff++) {
+        for (int i = 1; i <= n; i++) {
+            int j = i + diff;
+            if (j > n) j -= n;
+
+            cout << i << ' ' << j << endl;
+            cout.flush();  // ✅ ensures output is sent immediately
+
+            int ans;
+            if (!(cin >> ans)) return;  // defensive check in case input ends
+
+            if (ans == -1) exit(0);
+            if (ans == 1) return;
+        }
     }
 }
 

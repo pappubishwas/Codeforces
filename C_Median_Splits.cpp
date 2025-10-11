@@ -58,22 +58,77 @@ const int MOD = 998244353;
 
 void solve()
 {
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> pap(n);
+    for (ll i = 0; i < n; i++)
+        cin >> pap[i];
+
+    if (n == 3)
+    {
+        sort(all(pap));
+        cout << (pap[1] <= k ? "YES\n" : "NO\n");
+        return;
     }
+
+    multiset<ll> st;
+    ll f1 = pap[0];
+    ll l = n;
+
+    // Step 1: find index l
+    for (ll i = 0; i < n - 2; i++)
+    {
+        st.insert(pap[i]);
+
+        auto it = st.begin();
+        advance(it, (st.size()- 1)/ 2); // find median
+        f1 = *it;
+        //cout<<f1<<" ";
+        if (f1 <= k)
+        {
+            //cout<<f1;
+            l = i + 1;
+            break;
+        }
+    }
+    //cout<<l;
+    // Step 2: if a valid l found
+    if (l != n)
+    {
+        multiset<ll> t1, t2;
+
+        for (ll i = l; i < n; i++)
+        {
+            t2.insert(pap[i]);
+        }
+
+        for (ll i = l; i < n - 1; i++)
+        {
+            t1.insert(pap[i]);
+            t2.erase(t2.find(pap[i])); 
+
+            // find medians
+            auto it1 = t1.begin();
+            advance(it1, (t1.size()-1) / 2);
+            ll m1 = *it1;
+
+            auto it2 = t2.begin();
+            advance(it2, (t2.size()-1) / 2);
+            ll m2 = *it2;
+            // cout<<m1<<" "<< m2<<endl;
+            if (m1 <= k || m2 <= k)
+            {
+                cout << "YES\n";
+                return;
+            }
+        }
+    }
+
+    cout << "NO\n";
 }
+
+
+
 
 
 int main()

@@ -56,23 +56,17 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 const int MOD = 998244353;
 
-void solve()
-{
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+void solve() {
+    ll n,k,m,x,q;
+    cin >> n ;
+    vector<ll> pap(n);
+    set<ll> st;
+    for(ll i=0;i<n;i++){
+        cin>>x;
+        st.insert(x);
     }
+    cout<<2*st.size()-1<<endl;
+
 }
 
 
@@ -87,4 +81,7 @@ int main()
    }
     return 0;
 }
-       
+
+// 1 3 1 1 1 2
+// 2 3 3 4 4 5 8 9 9
+//  2 3 3  4 4 5 8 9 9         

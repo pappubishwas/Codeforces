@@ -56,23 +56,89 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 const int MOD = 998244353;
 
-void solve()
-{
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+
+
+
+std::vector<ll> sieveOfEratosthenes(ll n) {
+    // Create the boolean vector to mark numbers
+    std::vector<bool> is_prime(n + 1, true);
+    is_prime[0] = is_prime[1] = false;
+
+    // The sieving process (same as before)
+    for (ll p = 2; p * p <= n; ++p) {
+        if (is_prime[p]) {
+            for (ll i = p * p; i <= n; i += p) {
+                is_prime[i] = false;
+            }
+        }
     }
+
+    // Create a vector to store the prime numbers
+    std::vector<ll> primes;
+    // Collect all prime numbers from the boolean vector
+    for (ll p = 2; p <= n; ++p) {
+        if (is_prime[p]) {
+            primes.push_back(p);
+        }
+    }
+    
+    // Return the final vector of primes
+    return primes;
+}
+
+std::vector<ll> findFirstNPrimes(ll n) {
+    if (n <= 0) {
+        return {}; // Return an empty vector for non-positive n
+    }
+
+    // Step 1: Estimate the upper bound required to find n primes.
+    // This formula is a safe upper bound for the n-th prime for n >= 6.
+    int limit;
+    if (n >= 6) {
+        double n_double = static_cast<double>(n);
+        limit = static_cast<int>(n_double * (log(n_double) + log(log(n_double))));
+    } else {
+        // For small n, a fixed small limit is sufficient.
+        limit = 15;
+    }
+    cout<<limit<<endl;
+    // Step 2: Run the sieve up to the estimated limit.
+    std::vector<ll> all_primes = sieveOfEratosthenes(limit);
+    cout<<all_primes.size()<<endl;
+    // Step 3: Truncate the vector to contain exactly n primes.
+    if (all_primes.size() > n) {
+        all_primes.resize(n);
+    }
+    
+    return all_primes;
+}
+
+vector<ll> prime;
+void solve() {
+    ll n,k,m,x,q;
+    cin>> n;
+    vector<ll> pap(n);
+    for(auto &x: pap) cin>> x;
+    sort(all(pap));
+    ll i=n-1;
+    ll p=0;
+
+    ll coin=0;
+    while(i>=0){
+        if(prime[p]<=pap[i]){
+            coin+=(pap[i]-prime[p]);
+        }else{
+            ll coinNeed=prime[p]-pap[i];
+            if(coin>=coinNeed){
+                coin-=coinNeed;
+            }else{
+                break;
+            }
+        }
+        i--;
+        p++;
+    }
+    cout<<i+1<<endl;
 }
 
 
@@ -81,10 +147,10 @@ int main()
    IOS;tie;
    int T;
    cin>>T;
+   prime=sieveOfEratosthenes(6000000);
    while(T--)
    {
     solve();
    }
     return 0;
 }
-       

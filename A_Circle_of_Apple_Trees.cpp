@@ -58,22 +58,19 @@ const int MOD = 998244353;
 
 void solve()
 {
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+    ll n, k;
+    cin >> n ;
+    vector<ll> pap(n);
+    set<ll> s;
+    for(int i=0;i<n;i++){
+        cin>>k;
+        s.insert(k);
     }
+    cout<<s.size()<<endl;
 }
+
+
+
 
 
 int main()

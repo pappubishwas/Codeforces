@@ -60,19 +60,22 @@ void solve()
 {
     ll n;
     cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+    multiset<ll> mt;
+    vector<ll> pap(n),ans(n);
+    for(auto &x:pap){
+        cin>>x;
+        mt.insert(x);
     }
+    
+    ll curr=0;
+    for(ll i=n-1;i>=0;i--){
+        auto it = prev(mt.end());
+        ans[n-i-1]=curr+*it;
+        curr+=pap[i];
+        mt.erase(mt.find(pap[i]));
+    }
+    for(auto &x:ans) cout<<x<<" ";
+    cout<<endl;
 }
 
 

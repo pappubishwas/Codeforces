@@ -56,22 +56,45 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 const int MOD = 998244353;
 
-void solve()
-{
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
-    }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+void solve() {
+    ll n,k,m,x,q;
+    cin >> n >> q;
+    vector<ll> pap(n);
+    for(ll i=0;i<n;i++){
+        cin>>pap[i];
+    }
+    vector<ll> pr;
+    vector<ll> one(n,0),zero(n,0);
+    if(pap[0]==0) zero[0]=1;
+    else one[0]=1;
+    for(ll i=1;i<n;i++){
+        one[i]=one[i-1];
+        zero[i]=zero[i-1];
+        if(pap[i]==1) one[i]+=1;
+        else zero[i]+=1;
+        if(pap[i-1]==pap[i]){
+            pr.push_back(i-1);
+        }
+    }
+    //for(auto &x:pr) cout<<x<<" ";
+    for(ll i=0;i<q;i++){
+        ll l,r;
+        cin>>l>>r;
+        l--;
+        r--;
+        ll z= zero[r] - (l-1<0 ? 0 : zero[l-1]); 
+        ll o= one[r]- (l-1<0 ? 0 : one[l-1]); 
+        if((r-l+1)%3!=0 || (z%3!=0) || o%3!=0){
+            cout<<-1<<endl;
+            continue;
+        }
+        auto it=lower_bound(pr.begin(),pr.end(),l);
+        ll res=(r-l+1)/3;
+        ll idx=-1;
+        if(it!=pr.end())
+            idx=*it;
+        if(idx>=l && idx<r) cout<<res<<endl;
+        else cout<<res+1<<endl;
     }
 }
 
@@ -87,4 +110,3 @@ int main()
    }
     return 0;
 }
-       

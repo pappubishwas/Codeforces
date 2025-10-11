@@ -56,22 +56,97 @@ template <class T> ostream& operator<<(ostream& out, vector<T> &v){for (auto& i 
 const int mod = 1e9 + 7;
 const int MOD = 998244353;
 
-void solve()
-{
-    ll n;
-    cin>>n;
-    string s;
-    cin>> s;
-    if(s[0]==s[n-1]){
-        if(s[0]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+void solve() {
+    ll n,k,m,x,q;
+    cin>> n;
+    vector<ll> vec(n);
+    for(auto &x:vec) cin>>x;
+    if(count(vec.begin(),vec.end(),vec[0])==n){
+        if(n & 1){
+            if(vec[0]==n/2+1){
+                cout<<2<<endl;
+            }else{
+                cout<<0<<endl;
+            }
+        }else{
+            if(vec[0]==n/2 || vec[0]==n/2+1) cout<<1<<endl;
+            else cout<<0<<endl;
+        }
     }else{
-        ll cnt=0;
-        for(int i=1;i<n-1;i++) if(s[i]==s[n-1]) cnt++;
-        if((s[n-1]=='B' && cnt>0)) cout<<"Bob"<<endl;
-        //else if(s[n-1]=='A' && cnt>0) cout<<"Alice"<<endl;
-        else if(s[n-2]=='B') cout<<"Bob"<<endl;
-        else cout<<"Alice"<<endl;
+        vector<char> v(n);
+        auto expect=[&](ll i,ll val)-> bool{
+            if(v[i]==0){
+                v[i]=val;
+                return true;
+            }else if(v[i]==val){
+                return true;
+            }else return false;
+        };
+
+        for(ll i=0;i<n-1;i++){
+            ll del=vec[i+1]-vec[i];
+            if(del==1){
+                if(!expect(i,'L')){
+                    cout<<0<<endl;
+                    return;
+                }
+                if(!expect(i+1,'L')){
+                    cout<<0<<endl;
+                    return;
+                }
+            }else if(del==-1){
+                if(!expect(i,'R')){
+                    cout<<0<<endl;
+                    return;
+                }
+                if(!expect(i+1,'R')){
+                    cout<<0<<endl;
+                    return;
+                }
+            }else if(del){
+                cout<<0<<endl;
+                return;
+            }
+        }
+        queue<ll>q;
+        for(ll i=0;i<n;i++){
+            if(v[i]) q.push(i);
+        }
+        while (q.size())
+        {
+            ll x=q.front();
+            q.pop();
+            if(x<n-1){
+                if(v[x+1]==0){
+                    v[x+1]='R'+'L'-v[x];
+                    q.push(x+1);
+                }else if(v[x+1]!='R'+'L'-v[x] && vec[x]==vec[x+1]){
+                    cout<<0<<endl;
+                    return;
+                }
+            }
+            if(x>0){
+                if(v[x-1]==0){
+                    v[x-1]='R'+'L'-v[x];
+                    q.push(x-1);
+                }else if(v[x-1]!='R'+'L'-v[x] && vec[x]==vec[x-1]){
+                    cout<<0<<endl;
+                    return;
+                }
+            }
+        }
+        ll pr[n],po[n];
+        pr[0]=0;
+        po[n-1]=0;
+        for(int i=1;i<n;i++) pr[i]=pr[i-1]+ (v[i-1]=='L');
+        for(int i=n-2;i>=0;i--) po[i]=po[i+1]+ (v[i+1]=='R');
+        for(int i=0;i<n;i++){
+            if(vec[i]!=pr[i]+po[i]+1){
+                cout<<0<<endl;
+                return;
+            }
+        }
+        cout<<1<<endl;
     }
 }
 
