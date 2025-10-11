@@ -58,44 +58,32 @@ const int MOD = 998244353;
 
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vector<ll> pap(n);
-    for (ll i = 0; i < n; i++)
-        cin >> pap[i];
-    auto find=[&](ll start,ll diff){
-        ll cnt=0;
-        for(ll i=start;i>=0 && i<n;i+=diff){
-            cnt+=(pap[i]<=k);
-            cnt-=(pap[i]>k);
-            if(cnt>=0) return i;
+    ll n,k;
+    cin>>n;
+    string s;
+    cin>>s;
+    vector<ll> psum(n);
+    map<ll,set<ll>> mp;
+    for(ll i=0;i<n;i++){
+        psum[i]= (s[i]=='a' ? 1 : -1);
+        if(i) psum[i]+=psum[i-1];
+        mp[psum[i]].insert(i);
+    }
+    ll minremove=psum[n-1];
+    if(minremove==0) cout<<0<<endl;
+    else{
+        ll ans=n;
+        for(int i=0;i<n;i++){
+            ll target= minremove + ((i>0) ? psum[i-1]:0);
+            if(mp.count(target) && !mp[target].empty()){
+                ll pos= *mp[target].begin();
+                ans=min(ans,pos-i+1);
+            }
+            mp[psum[i]].erase(i);
         }
-        return diff==1 ? n : -1;
-    };
-
-    auto first2=[&](){
-        ll l=find(0,1);
-        if(l%2==0 && l+1<n && pap[l+1]>k) l++;
-        ll r=find(l+1,1);
-        return r<n-1;
-    };
-    auto last2=[&](){
-        ll r=find(n-1,-1);
-        if((n-r)%2 && r-1>=0 && pap[r-1]>k) r--;
-        ll l=find(r-1,-1);
-        return l>0;
-    };
-    auto outer2=[&](){
-        ll l=find(0,1);
-        ll r=find(n-1,-1);
-        return r-l>1;
-    };
-    cout<<((first2() || last2() || outer2()) ? "YES":"NO")<<endl;
+        cout<<((ans==n) ? -1 : ans)<<endl;
+    }
 }
-
-
-
-
 
 int main()
 {  
@@ -108,4 +96,3 @@ int main()
    }
     return 0;
 }
-       

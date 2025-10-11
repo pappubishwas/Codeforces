@@ -58,44 +58,11 @@ const int MOD = 998244353;
 
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vector<ll> pap(n);
-    for (ll i = 0; i < n; i++)
-        cin >> pap[i];
-    auto find=[&](ll start,ll diff){
-        ll cnt=0;
-        for(ll i=start;i>=0 && i<n;i+=diff){
-            cnt+=(pap[i]<=k);
-            cnt-=(pap[i]>k);
-            if(cnt>=0) return i;
-        }
-        return diff==1 ? n : -1;
-    };
-
-    auto first2=[&](){
-        ll l=find(0,1);
-        if(l%2==0 && l+1<n && pap[l+1]>k) l++;
-        ll r=find(l+1,1);
-        return r<n-1;
-    };
-    auto last2=[&](){
-        ll r=find(n-1,-1);
-        if((n-r)%2 && r-1>=0 && pap[r-1]>k) r--;
-        ll l=find(r-1,-1);
-        return l>0;
-    };
-    auto outer2=[&](){
-        ll l=find(0,1);
-        ll r=find(n-1,-1);
-        return r-l>1;
-    };
-    cout<<((first2() || last2() || outer2()) ? "YES":"NO")<<endl;
+   ll n;
+    cin>>n;
+    if(n%3==0) cout<<0<<endl;
+    else cout<<3-n%3<<endl;
 }
-
-
-
-
 
 int main()
 {  
@@ -108,4 +75,3 @@ int main()
    }
     return 0;
 }
-       
