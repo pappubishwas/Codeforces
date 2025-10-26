@@ -51,37 +51,36 @@ void Solve()
         for (int i : indices) {
             cout << "? " << i << " " << x << endl;
             int res = que();
-            if (res == 1) { 
+            if (res == 1) { // kth bit is set 
                 indicesOne.push_back(i);
                 countOne++;
-            } else {
+            } else { // kth bit is not set
                 indicesZero.push_back(i);
             }
         }
 
-        int totalCount = 0;
+        int totalCountOne = 0;
         
         for (int val : values) {
-            if ((val & x) != 0) {
+            if ((val & x) != 0) { // kth bit is set
                 valuesOne.push_back(val);
-                totalCount++;
-            } else { 
-                valuesZero.push_back(val);
+                totalCountOne++;
+            } else { // kth bit is not set
+                valuesZero.push_back(val); 
             }
         }
 
-        if (countOne < totalCount) {
-            ans |= x;
-            indices = indicesOne; 
-            values = valuesOne;   
+        if (countOne < totalCountOne) { // means kth bit is set in ans(in the last number)
+            //ans |= x;
+            indices = indicesOne; // my answer on the indices where kth bit is set
+            values = valuesOne;   // my answer on the values where kth bit is set
         } else {
-            indices = indicesZero; 
-            values = valuesZero;   
+            indices = indicesZero; // my answer on the indices where kth bit is not set
+            values = valuesZero;   // my answer on the values where kth bit is not set
         }
     }
 
-    ans = values[0];
-    cout << "! " << ans << endl;
+    cout << "! " << values[0] << endl;
 }
 
 int32_t main()
