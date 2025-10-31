@@ -3,7 +3,7 @@
 #include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 using namespace __gnu_pbds;
-#define int long long 
+#define int long long
 #define INF (int)1e18
 mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
 template <class T>
@@ -15,45 +15,37 @@ int binaryLength(int n)
 {
     return 64 - __builtin_clzll(n);
 }
+int mod=998244353;
 
-void solve()
-{
+void solve() {
     int n;
     cin >> n;
-    vector<int> a(n); 
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> a[i];
+    vector<int> pap(n);
+    for(int i=0;i<n;i++) cin>>pap[i];
+    sort(begin(pap),end(pap));
+    if(pap[0]!=pap[1]){
+        cout<<"No"<<endl;
+        return;
     }
-    vector<int> c(n); 
-    int total = 0;
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> c[i];
-        total += c[i]; // total cost 
-    }
-
-    vector<int> dp(n, 0);
-    int mxsave = 0; // store maximum how much i can save
-
-    // dp[i] defines that, if we don't replace ith element how much cost we can save , so till ith element how much saved by taking ith element
-    for (int i = 0; i < n; ++i)
-    {
-        int prev = 0; // it will find prevously how much i can save if we take ith element
-        for (int j = 0; j < i; ++j)
-        {
-            if (a[j] <= a[i]) // this jth element is less than or equal to ith element
-            {
-                prev = max(prev, dp[j]); // keeping the maximum ammount can be saved
+    int lastseen=pap[0];
+    for(int i=2;i<n;i+=2){
+        int a1=pap[i];
+        int a2=pap[i+1];
+        if(a1==a2){
+            if(a1<=lastseen){
+                lastseen++;
+            }else{
+                lastseen=a1;
+            }
+        }else{
+            lastseen++;
+            if(a1>lastseen || lastseen<a2){
+                cout<<"No"<<endl;
+                return;
             }
         }
-
-        dp[i] = c[i] + prev; // current element +prev saved cost, as we are not replacing current element
-
-        mxsave = max(mxsave, dp[i]);
     }
-
-    cout << total - mxsave << "\n";
+    cout<<"Yes"<<endl;
 }
 
 int32_t main()

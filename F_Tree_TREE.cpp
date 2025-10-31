@@ -12,6 +12,7 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 int n, k;
 vector<vector<int>> adj;
 vector<int> subtree;
+vector<int> dp;
 int total;
 
 int dfs(int u, int p) {
@@ -38,11 +39,38 @@ int dfs(int u, int p) {
     return subtree[u];
 }
 
+int dfs1(int u,vector<bool>& visited){
+    visited[u]=true;
+    int res=1;
+    for(int child:adj[u]){
+        if(!visited[child]){
+            res+=dfs1(child,visited);
+        }
+    }
+    return subtree[u]=res;
+}
+
+void dfs2(int u,int k,vector<bool>& visited){
+    visited[u]=true;
+
+    for(int child:adj[u]){
+        if(!visited[child]){
+            int x=subtree[child];
+            int diff=0;
+            if(x<k) diff++;
+            if(n-x < k) diff--;
+            dp[child]=dp[u]+diff;
+            dfs2(child,k,visited);
+        }
+    }
+}
+
 void solve() {
     cin >> n >> k;
 
     adj.assign(n + 1, vector<int>());
     subtree.assign(n + 1, 0);
+    dp.assign(n+1,0);
     total = 0;
 
     for (int i = 0; i < n - 1; ++i) {
@@ -52,12 +80,18 @@ void solve() {
         adj[v].push_back(u);
     }
 
-    if (n >= k) {
-        total = n;
-    }
+    // if (n >= k) {
+    //     total = n;
+    // }
+    //dfs(1, -1);
 
-    dfs(1, -1);
-
+    vector<bool> visited(n+1,false);
+    dfs1(1,visited);
+    
+    for(int i=1;i<=n;i++) if(subtree[i]>=k) dp[1]++;
+    visited.assign(n+1,false);
+    dfs2(1,k,visited);
+    for(int i=1;i<=n;i++) total+=dp[i];
     cout << total << "\n";
 }
 

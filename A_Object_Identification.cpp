@@ -3,7 +3,7 @@
 #include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 using namespace __gnu_pbds;
-#define int long long 
+#define int long long
 #define INF (int)1e18
 mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
 template <class T>
@@ -15,45 +15,61 @@ int binaryLength(int n)
 {
     return 64 - __builtin_clzll(n);
 }
+int mod=998244353;
 
-void solve()
-{
+void solve() {
     int n;
     cin >> n;
-    vector<int> a(n); 
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> a[i];
-    }
-    vector<int> c(n); 
-    int total = 0;
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> c[i];
-        total += c[i]; // total cost 
+    vector<int> pap(n),frq(n+1);
+    for(int i=0;i<n;i++) {
+        cin>>pap[i];
+        frq[pap[i]]++;
     }
 
-    vector<int> dp(n, 0);
-    int mxsave = 0; // store maximum how much i can save
+    auto query=[&](int x,int y){
+        cout<<"? "<<x<<" "<<y<<endl;
+        int val;
+        cin>>val;
+        return val;
+    };
 
-    // dp[i] defines that, if we don't replace ith element how much cost we can save , so till ith element how much saved by taking ith element
-    for (int i = 0; i < n; ++i)
-    {
-        int prev = 0; // it will find prevously how much i can save if we take ith element
-        for (int j = 0; j < i; ++j)
-        {
-            if (a[j] <= a[i]) // this jth element is less than or equal to ith element
-            {
-                prev = max(prev, dp[j]); // keeping the maximum ammount can be saved
+    for(int i=1;i<=n;i++){
+        if(frq[i]==0){
+            int y=i-1;
+            if(y==0) y=i+1;
+            int q=query(i,y);
+            if(q==0){
+                cout<<"! A"<<endl;
+            }else{
+                cout<<"! B"<<endl;
             }
+            return;
         }
-
-        dp[i] = c[i] + prev; // current element +prev saved cost, as we are not replacing current element
-
-        mxsave = max(mxsave, dp[i]);
     }
 
-    cout << total - mxsave << "\n";
+    int p1,p2;
+    for(int i=0;i<n;i++){
+        if(pap[i]==1) p1=i+1;
+        if(pap[i]==n) p2=i+1;
+    }
+
+    int q1=query(p1,p2);
+    int q2=query(p2,p1);
+    if(q1==q2 && q1+1>=n){
+        cout<<"! B"<<endl;
+    }else{
+        cout<<"! A"<<endl;
+    }
+    // cout<<"? 1 2"<<endl;
+    // int ans1,ans2;
+    // cin>>ans1;
+    // cout<<"? 2 1"<<endl;
+    // cin>> ans2;
+    // if(ans1==ans2 && ans1!=0){
+    //     cout<<"! B"<<endl;
+    // }else {
+    //     cout<<"! A"<<endl;
+    // }
 }
 
 int32_t main()

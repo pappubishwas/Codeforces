@@ -15,48 +15,44 @@ int binaryLength(int n)
 {
     return 64 - __builtin_clzll(n);
 }
-int mod=998244353;
-int primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53};
+int mod = 998244353;
 
-void solve() {
-    int n;
-    cin >> n;
-    vector<long long> a(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> a[i];
-    }
-
-    // for (int p : primes) {
-    //     bool flag = true;
-        
-    //     for (int i = 0; i < n; ++i) {
-    //         if (a[i] % p != 0) {
-    //             flag = false;
-    //             break;
-    //         }
-    //     }
-
-    //     if (!flag) {
-    //         cout << p << "\n";
-    //         return;
-    //     }
-        
-    // }
-    // cout<<-1<<"\n"; 
-
-    for(int x=2;;x++){
-        bool has=false;
-        for(int y:a){
-            if(__gcd(x,y)==1){
-                has=true;
-                break;
-            }
+int findOptimal(int need,int curr,vector<int>& b){
+    int l=0,r=b.size()-1;
+    int ans=INF;
+    while(l<=r){
+        int mid=(l+r)/2;
+        int temp=b[mid]-curr;
+        if(temp<=need){
+            ans=temp;
+            l=mid+1;
+        }else{
+            r=mid-1;
         }
-        if(has){
-            cout<<x<<endl;
+    }
+    return ans;
+}
+
+void solve()
+{
+    int n, m, k;
+    cin >> n >> m ;
+    vector<int> pap(n),b(m);
+    for(auto& t:pap) cin>>t;
+    for(auto& t:b) cin>>t;
+    sort(begin(b),end(b));
+    pap[n-1]=max(pap[n-1],b[m-1]-pap[n-1]);
+    for(int i=n-2;i>=0;i--){
+        int temp=findOptimal(pap[i+1],pap[i],b);
+        if(pap[i]<=pap[i+1] && temp<=pap[i+1]){
+            pap[i]=max(pap[i],temp);
+        }else if(temp<=pap[i+1]) pap[i]=temp;
+        if(pap[i]>pap[i+1]){
+            cout<<"NO"<<endl;
             return;
         }
-    }
+    }           
+    cout<<"YES"<<endl;
 }
 
 int32_t main()

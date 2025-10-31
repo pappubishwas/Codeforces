@@ -3,7 +3,7 @@
 #include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 using namespace __gnu_pbds;
-#define int long long 
+#define int long long
 #define INF (int)1e18
 mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
 template <class T>
@@ -15,45 +15,47 @@ int binaryLength(int n)
 {
     return 64 - __builtin_clzll(n);
 }
+int mod = 998244353;
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n); 
-    for (int i = 0; i < n; ++i)
+    int n, m, k;
+    cin >> n >> m >> k;
+    if (max(n, m) < k || abs(n - m) > k)
     {
-        cin >> a[i];
+        cout << -1 << endl;
     }
-    vector<int> c(n); 
-    int total = 0;
-    for (int i = 0; i < n; ++i)
+    else
     {
-        cin >> c[i];
-        total += c[i]; // total cost 
-    }
-
-    vector<int> dp(n, 0);
-    int mxsave = 0; // store maximum how much i can save
-
-    // dp[i] defines that, if we don't replace ith element how much cost we can save , so till ith element how much saved by taking ith element
-    for (int i = 0; i < n; ++i)
-    {
-        int prev = 0; // it will find prevously how much i can save if we take ith element
-        for (int j = 0; j < i; ++j)
+        bool flag = (n >= m) ? true : false;
+        string s = "";
+        int i = k;
+        while (n > 0 || m > 0)
         {
-            if (a[j] <= a[i]) // this jth element is less than or equal to ith element
+            if (flag)
             {
-                prev = max(prev, dp[j]); // keeping the maximum ammount can be saved
+                while (n > 0 && i > 0)
+                {
+                    s += "0";
+                    i--;
+                    n--;
+                }
+                flag = false;
             }
+            else
+            {
+                while (m > 0 && i > 0)
+                {
+                    s += "1";
+                    i--;
+                    m--;
+                }
+                flag=true;
+            }
+            i=k;
         }
-
-        dp[i] = c[i] + prev; // current element +prev saved cost, as we are not replacing current element
-
-        mxsave = max(mxsave, dp[i]);
+        cout<<s<<endl;
     }
-
-    cout << total - mxsave << "\n";
 }
 
 int32_t main()
