@@ -20,30 +20,27 @@ int mod = 998244353;
 
 void solve()
 {
-    // int n, m,x;
-    // cin>>x>>m;
-    // int len=binaryLength(x);
-    // int limit=(1<<len) -1; // y value can't be greater than the 2^(bit len of x) - 1 
-    // int ans=0;
-    // for(int y=1;y<=min(limit,m);y++){
-    //     if(y==x) continue;
-    //     int d=x^y;
-    //     if(x%d==0 || y%d==0) ans++;
-    // }
-    // cout<<ans;
-    // cout<<endl;
-
-
-    int x, m; cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <= m; ++y) {
-        //cout<<__lg(y)<<" "<<__lg(x)<<endl;
-        if (__lg(y) > __lg(x)) break;
-        int tmp = x ^ y;
-        if (tmp == 0) continue;
-        if (x % tmp == 0 || y % tmp == 0) ++ans;
+    int n, m,x,len;
+    cin>> n;
+    vector<int> pap(n);
+    int mn=-1,mx=-1;
+    for(int i=0;i<n;i++) {
+        cin>> pap[i];
+        if(pap[i]==1) mn=i;
+        if(pap[i]==n) mx=i;
     }
-    cout << ans << "\n";
+    string s;
+    cin>> s;
+    if(s[0]=='1' || s[n-1]=='1' || s[mn]=='1' || s[mx]=='1'){
+        cout<<-1<<endl;
+        return;
+    }
+    cout<<5<<endl;
+    cout<<1<<" "<<mn+1<<endl;
+    cout<<1<<" "<<mx+1<<endl;
+    cout<<1+min(mx,mn)<<" "<<1+max(mn,mx)<<endl;
+    cout<<mx+1<<" "<<n<<endl;
+    cout<<mn+1<<" "<<n<<endl;
 }
 
 int32_t main()

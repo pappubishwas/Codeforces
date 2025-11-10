@@ -20,30 +20,23 @@ int mod = 998244353;
 
 void solve()
 {
-    // int n, m,x;
-    // cin>>x>>m;
-    // int len=binaryLength(x);
-    // int limit=(1<<len) -1; // y value can't be greater than the 2^(bit len of x) - 1 
-    // int ans=0;
-    // for(int y=1;y<=min(limit,m);y++){
-    //     if(y==x) continue;
-    //     int d=x^y;
-    //     if(x%d==0 || y%d==0) ans++;
-    // }
-    // cout<<ans;
-    // cout<<endl;
-
-
-    int x, m; cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <= m; ++y) {
-        //cout<<__lg(y)<<" "<<__lg(x)<<endl;
-        if (__lg(y) > __lg(x)) break;
-        int tmp = x ^ y;
-        if (tmp == 0) continue;
-        if (x % tmp == 0 || y % tmp == 0) ++ans;
+    int n, m,x;
+    cin>>x>>m;
+    int ans=0;
+    int y=x,i=2;
+    for(int k=1;k<=min(x,m);k++){
+        int d=x^k;
+        if(d%x==0 || d%k==0) ans++;
     }
-    cout << ans << "\n";
+    while(y<=m){
+        y=(i*x);
+        if((y^x)<=m) ans++;
+        else if(__lg(y^x)>__lg(m)) break;
+        i++;
+    }
+    cout<<ans;
+    cout<<endl;
+
 }
 
 int32_t main()

@@ -20,30 +20,38 @@ int mod = 998244353;
 
 void solve()
 {
-    // int n, m,x;
-    // cin>>x>>m;
-    // int len=binaryLength(x);
-    // int limit=(1<<len) -1; // y value can't be greater than the 2^(bit len of x) - 1 
-    // int ans=0;
-    // for(int y=1;y<=min(limit,m);y++){
-    //     if(y==x) continue;
-    //     int d=x^y;
-    //     if(x%d==0 || y%d==0) ans++;
-    // }
-    // cout<<ans;
-    // cout<<endl;
-
-
-    int x, m; cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <= m; ++y) {
-        //cout<<__lg(y)<<" "<<__lg(x)<<endl;
-        if (__lg(y) > __lg(x)) break;
-        int tmp = x ^ y;
-        if (tmp == 0) continue;
-        if (x % tmp == 0 || y % tmp == 0) ++ans;
+    int n, m,x,len;
+    cin>>n>>m>>len;
+    vector<pair<int,int>> hurdels(n),powerup(m);
+    multiset<int> s;
+    for(int i=0;i<n;i++){
+        cin>> hurdels[i].first>>hurdels[i].second;
     }
-    cout << ans << "\n";
+    for(int i=0;i<m;i++){
+        cin>> powerup[i].first>>powerup[i].second;
+    }
+    int pw=1;
+    int j=0;
+    int res=0;
+    for(auto it:hurdels){
+        int l=it.first,r=it.second;
+        if(pw>(r-l+1)) continue;
+        while(powerup[j].first<l && j<m){
+            s.insert(powerup[j].second);
+            j++;
+        }
+        while(!s.empty() && pw<=(r-l+1)){
+            pw+=(*s.rbegin());
+            auto t=prev(s.end());
+            s.erase(t);
+            res++;
+        }
+        if(pw<=(r-l+1)){
+            cout<<-1<<endl;
+            return;
+        }
+    }
+    cout<<res<<endl;
 }
 
 int32_t main()
