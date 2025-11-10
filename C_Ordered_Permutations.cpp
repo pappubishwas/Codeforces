@@ -16,31 +16,35 @@ int binaryLength(int n)
     return 64 - __builtin_clzll(n);
 }
 int mod = 998244353;
+
+void find(int i,int l, int r,int k,vector<int>& pap){
+    if(l==r){
+        pap[l]=i;
+        return;
+    }
+    int sz=r-l-1;
+    if(sz<60 && (1LL <<sz) < k){
+        pap[r]=i;
+        find(i+1,l,r-1,k-(1LL<<sz),pap);
+    }else{
+        pap[l]=i;
+        find(i+1,l+1,r,k,pap);
+    }
+}
+
 void solve()
 {
-    int n, k;
-    string s,t;
-    cin>>s>>t;
-    map<char,int> mp;
-    n=t.size();
-    int lens=-1,idxt=-1,l=INT_MAX;
-    for(int i=0;i<t.size()-1;i++){
-        mp[t[i]]=n-i;
+    int n, idx = -1, k;
+    cin >> n >> k;
+    vector<int> pap(n);
+    if (n-1 <= 60 && (1LL <<( n - 1)) < k)
+    {
+        cout << -1 << endl;
+        return;
     }
-    for(int i=1;i<s.size();i++){
-        if(mp.find(s[i])!=mp.end()){
-            int len=mp[s[i]]+i;
-            if(len<l){
-                lens=i;
-                idxt=n-mp[s[i]];
-                l=len;
-            }
-        }
-    }
-    if(idxt==-1) cout<<-1<<endl;
-    else{
-        cout<<s.substr(0,lens)+t.substr(idxt,n-idxt)<<endl;
-    }
+    find(1,0, n - 1, k, pap);
+    for(auto p:pap) cout<< p<<" ";
+    cout<<endl;
 }
 
 int32_t main()
@@ -53,8 +57,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    //cin >> t;
-    t=1;
+    cin >> t;
+    // t=1;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

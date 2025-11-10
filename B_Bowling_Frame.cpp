@@ -16,31 +16,25 @@ int binaryLength(int n)
     return 64 - __builtin_clzll(n);
 }
 int mod = 998244353;
+
+
 void solve()
 {
-    int n, k;
-    string s,t;
-    cin>>s>>t;
-    map<char,int> mp;
-    n=t.size();
-    int lens=-1,idxt=-1,l=INT_MAX;
-    for(int i=0;i<t.size()-1;i++){
-        mp[t[i]]=n-i;
-    }
-    for(int i=1;i<s.size();i++){
-        if(mp.find(s[i])!=mp.end()){
-            int len=mp[s[i]]+i;
-            if(len<l){
-                lens=i;
-                idxt=n-mp[s[i]];
-                l=len;
-            }
+    int n, k, x,m, y,l1,l2,r1,r2;
+    int w,b;
+    cin>>w>>b;
+    int l=0,r=1e9,ans=0;
+    while(l<=r){
+        int m=(l+r)/2;
+        int need=(m*(m+1))/2;
+        if(need<=(w+b)){
+            ans=m;
+            l=m+1;
+        }else{
+            r=m-1;
         }
     }
-    if(idxt==-1) cout<<-1<<endl;
-    else{
-        cout<<s.substr(0,lens)+t.substr(idxt,n-idxt)<<endl;
-    }
+    cout<<ans<<endl;
 }
 
 int32_t main()
@@ -53,8 +47,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    //cin >> t;
-    t=1;
+    cin >> t;
+    // t=1;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

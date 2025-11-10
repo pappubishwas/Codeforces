@@ -18,29 +18,35 @@ int binaryLength(int n)
 int mod = 998244353;
 void solve()
 {
-    int n, k;
-    string s,t;
-    cin>>s>>t;
-    map<char,int> mp;
-    n=t.size();
-    int lens=-1,idxt=-1,l=INT_MAX;
-    for(int i=0;i<t.size()-1;i++){
-        mp[t[i]]=n-i;
-    }
-    for(int i=1;i<s.size();i++){
-        if(mp.find(s[i])!=mp.end()){
-            int len=mp[s[i]]+i;
-            if(len<l){
-                lens=i;
-                idxt=n-mp[s[i]];
-                l=len;
-            }
+    int n, k, x,m, y;
+    cin >> n>>m;
+    vector<int> quetions(m),participant(n);
+    for(auto& t:participant) cin>>t;
+    int kavin=participant[0];
+    sort(begin(participant),end(participant));
+    for(int i=0;i<m;i++) cin>> quetions[i];
+    for(int i=0;i<m;i++){
+        if(quetions[i]<=kavin){
+            quetions[i]=1;
+        }else{
+            int cnt=participant.end() - lower_bound(begin(participant),end(participant),quetions[i]);
+            quetions[i]=cnt+1;
         }
+        //cout<<quetions[i]<<" ";
     }
-    if(idxt==-1) cout<<-1<<endl;
-    else{
-        cout<<s.substr(0,lens)+t.substr(idxt,n-idxt)<<endl;
+    sort(begin(quetions),end(quetions));
+    k=1;
+    while(k<=m){
+        int i=k-1;
+        int res=0;
+        while(i<m){
+            res+=quetions[i];
+            i+=k;
+        }
+        cout<<res<<" ";
+        k++;
     }
+    cout<<endl;
 }
 
 int32_t main()
@@ -53,8 +59,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    //cin >> t;
-    t=1;
+    cin >> t;
+    // t=1;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

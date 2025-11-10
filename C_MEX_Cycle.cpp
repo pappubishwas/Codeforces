@@ -18,29 +18,44 @@ int binaryLength(int n)
 int mod = 998244353;
 void solve()
 {
-    int n, k;
-    string s,t;
-    cin>>s>>t;
-    map<char,int> mp;
-    n=t.size();
-    int lens=-1,idxt=-1,l=INT_MAX;
-    for(int i=0;i<t.size()-1;i++){
-        mp[t[i]]=n-i;
+    int n, k, x, y;
+    cin >> n >> x >> y;
+    vector<int> pap(n + 2, -1);
+    pap[x] = 0;
+    pap[y] = 2;
+    int curr = 1;
+    for (int i = x + 1; i < y; i++)
+    {
+        pap[i] = curr;
+        if (curr == 0)
+            curr = 1;
+        else
+            curr = 0;
     }
-    for(int i=1;i<s.size();i++){
-        if(mp.find(s[i])!=mp.end()){
-            int len=mp[s[i]]+i;
-            if(len<l){
-                lens=i;
-                idxt=n-mp[s[i]];
-                l=len;
-            }
-        }
+    curr = 1;
+    for (int i = x - 1; i > 0; i--)
+    {
+        pap[i] = curr;
+        if (curr == 0)
+            curr = 1;
+        else
+            curr = 0;
     }
-    if(idxt==-1) cout<<-1<<endl;
-    else{
-        cout<<s.substr(0,lens)+t.substr(idxt,n-idxt)<<endl;
+    for (int i = n; i > y; i--)
+    {
+        pap[i] = curr;
+        if (curr == 0)
+            curr = 1;
+        else
+            curr = 0;
     }
+    pap[0]=pap[n-1];
+    pap[n+1]=pap[1];
+    if(pap[y-1]==pap[y+1] && pap[y-1]==0){
+        pap[y]=1;
+    }
+    for(int i=1;i<=n;i++) cout<<pap[i]<<" ";
+    cout<<endl;
 }
 
 int32_t main()
@@ -53,8 +68,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    //cin >> t;
-    t=1;
+    cin >> t;
+    // t=1;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

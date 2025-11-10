@@ -18,29 +18,26 @@ int binaryLength(int n)
 int mod = 998244353;
 void solve()
 {
-    int n, k;
-    string s,t;
-    cin>>s>>t;
-    map<char,int> mp;
-    n=t.size();
-    int lens=-1,idxt=-1,l=INT_MAX;
-    for(int i=0;i<t.size()-1;i++){
-        mp[t[i]]=n-i;
-    }
-    for(int i=1;i<s.size();i++){
-        if(mp.find(s[i])!=mp.end()){
-            int len=mp[s[i]]+i;
-            if(len<l){
-                lens=i;
-                idxt=n-mp[s[i]];
-                l=len;
+    int n, k, x, y;
+    cin >> n;
+    vector<int> pap(n),ans;
+    multiset<int> gt;
+    for(int i=0;i<n;i++) cin>> pap[i];
+    ans.push_back(pap[0]);
+    for(int i=1;i<n;i++){
+            while(!ans.empty() && ans.back()>pap[i]){
+                gt.insert(ans.back()+1);
+                ans.pop_back();
             }
-        }
+        if(!gt.empty() && *gt.begin()<pap[i]) gt.insert(pap[i]+1);
+        else ans.push_back(pap[i]);
     }
-    if(idxt==-1) cout<<-1<<endl;
-    else{
-        cout<<s.substr(0,lens)+t.substr(idxt,n-idxt)<<endl;
+    for(int t:gt){
+        ans.push_back(t);
     }
+    for(int i=0;i<n;i++)
+    cout<<ans[i]<<" ";
+    cout<<endl;
 }
 
 int32_t main()
@@ -53,8 +50,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    //cin >> t;
-    t=1;
+    cin >> t;
+    // t=1;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";
