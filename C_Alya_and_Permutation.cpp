@@ -19,30 +19,51 @@ int mod = 998244353;
 
 void solve()
 {
-    int n, m, x;
-    cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <2 * x && y<=m; y++)
+    int n, m, x, k;
+    cin >> n;
+    vector<int> pap(n + 1);
+    int blen = binaryLength(n);
+    if (n % 2 || n <= 6)
     {
-        int d = x ^ y;
-        if (d<2*x && d % x == 0 || d % y == 0) // all y those x^y is divisble by x or y till y is 2*x and here we are calulating only whose x^y value is less than 2*x
-            ans++;
+        if (n == 6)
+            cout << 7 << endl;
+        else
+            cout << n << endl;
+        pap[n] = n;
+        pap[n - 1] = n - 1;
+        pap[n - 2] = 3;
+        pap[n - 3] = 1;
+        int idx = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            if (i == 1 || i == 3 || i == n || i == n - 1)
+                continue;
+            pap[idx] = i;
+            idx++;
+        }
     }
-
-
-    if ((m - x) >= 2 * x)
+    else
     {
-        ans += (m - x) / x;  // number of (x^y) is multiple of x till m-x 
-        ans--; // before 2x we alredy calculate
+        cout << (1 << blen) - 1 << endl;
+        int val = (1 << (blen - 1)) - 1;
+        pap[n] = n;
+        pap[n - 1] = val;
+        pap[n - 2] = val - 1;
+        pap[n - 3] = 3;
+        pap[n - 4] = 1;
+        int idx = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            if (i == 1 || i == 3 || i == n || i == val - 1 || i == val)
+                continue;
+            pap[idx] = i;
+            idx++;
+        }
     }
-    for (int z = m - x + 1; z <= m + x; z++)
+    for (int i = 1; i <= n; i++)
     {
-        if(z%x) continue;
-        int y = x ^ z;
-        if (y>=1 && y<=m) // y value can be between 1 to m, intitally those value generate x^y is greater than 2*x did not counted,so here we can count
-            ans++;
+        cout << pap[i] << " ";
     }
-    cout << ans;
     cout << endl;
 }
 
@@ -57,7 +78,7 @@ int32_t main()
     // freopen("out", "w", stdout);
 
     cin >> t;
-    // t=1;
+
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

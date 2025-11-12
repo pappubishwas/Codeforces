@@ -19,31 +19,41 @@ int mod = 998244353;
 
 void solve()
 {
-    int n, m, x;
-    cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <2 * x && y<=m; y++)
-    {
-        int d = x ^ y;
-        if (d<2*x && d % x == 0 || d % y == 0) // all y those x^y is divisble by x or y till y is 2*x and here we are calulating only whose x^y value is less than 2*x
-            ans++;
+    int n, m, x, k,q;
+    cin >> n>>k>>q;
+    vector<vector<int>> a(k,vector<int>(n));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<k;j++){
+            cin>> a[j][i];
+        }
     }
-
-
-    if ((m - x) >= 2 * x)
-    {
-        ans += (m - x) / x;  // number of (x^y) is multiple of x till m-x 
-        ans--; // before 2x we alredy calculate
+    for(int i=0;i<k;i++){
+        for(int j=1;j<n;j++){
+            a[i][j] |=a[i][j-1];
+        }
     }
-    for (int z = m - x + 1; z <= m + x; z++)
-    {
-        if(z%x) continue;
-        int y = x ^ z;
-        if (y>=1 && y<=m) // y value can be between 1 to m, intitally those value generate x^y is greater than 2*x did not counted,so here we can count
-            ans++;
+    while(q--){
+        cin>>m;
+        int l=0LL,r=n-1;
+        while(m--){
+            int re,c;
+            char ch;
+            cin>>re>>ch>>c;
+            re--;
+            if(ch=='>'){
+                int t=upper_bound(a[re].begin(),a[re].end(),c)-a[re].begin();
+                l=max(l,t);
+            }else{
+                int t=lower_bound(a[re].begin(),a[re].end(),c)-a[re].begin();
+                r=min(r,t-1);
+            }
+        }
+        if(l<=r){
+            cout<<l+1<<endl;
+        }else{
+            cout<<-1<<endl;
+        }
     }
-    cout << ans;
-    cout << endl;
 }
 
 int32_t main()
@@ -56,8 +66,8 @@ int32_t main()
     // freopen("in",  "r", stdin);
     // freopen("out", "w", stdout);
 
-    cin >> t;
-    // t=1;
+    //cin >> t;
+
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

@@ -20,30 +20,36 @@ int mod = 998244353;
 void solve()
 {
     int n, m, x;
-    cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <2 * x && y<=m; y++)
-    {
-        int d = x ^ y;
-        if (d<2*x && d % x == 0 || d % y == 0) // all y those x^y is divisble by x or y till y is 2*x and here we are calulating only whose x^y value is less than 2*x
-            ans++;
+    cin >> n;
+    vector<int> pap(n);
+    for(int i=0;i<n;i++) cin>> pap[i];
+    sort(pap.begin(),pap.end());
+    vector<int> cor; 
+    int l=0;
+    while(l<n-1){
+        if(pap[l]==pap[l+1]){
+            cor.push_back(pap[l]);
+            l++;
+        }
+        if(cor.size()==2) break;
+        l++;
     }
+    int r=n-1;
+    while(r-1>l){
+        if(pap[r]==pap[r-1]){
+            cor.push_back(pap[r]);
+            r--;
+        }
+        if(cor.size()==4) break;
+        r--;
+    }
+    sort(begin(cor),end(cor));
+    if(cor.size()<4) cout<<"NO"<<endl;
+    else{
+        cout<<"YES"<<endl;
+        cout<<cor[0]<<" "<<cor[1]<<" "<<cor[0]<<" "<<cor[3]<<" "<<cor[2]<<" "<<cor[1]<<" "<<cor[2]<<" "<<cor[3]<<endl;
 
-
-    if ((m - x) >= 2 * x)
-    {
-        ans += (m - x) / x;  // number of (x^y) is multiple of x till m-x 
-        ans--; // before 2x we alredy calculate
     }
-    for (int z = m - x + 1; z <= m + x; z++)
-    {
-        if(z%x) continue;
-        int y = x ^ z;
-        if (y>=1 && y<=m) // y value can be between 1 to m, intitally those value generate x^y is greater than 2*x did not counted,so here we can count
-            ans++;
-    }
-    cout << ans;
-    cout << endl;
 }
 
 int32_t main()
@@ -57,7 +63,7 @@ int32_t main()
     // freopen("out", "w", stdout);
 
     cin >> t;
-    // t=1;
+
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

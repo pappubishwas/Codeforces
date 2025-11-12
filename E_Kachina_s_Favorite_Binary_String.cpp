@@ -17,33 +17,37 @@ int binaryLength(int n)
 }
 int mod = 998244353;
 
+int query(int l,int r){
+    cout<<"? "<<l<<" "<<r<<endl;
+    int ans;
+    cin>>ans;
+    return ans;
+}
+
 void solve()
 {
-    int n, m, x;
-    cin >> x >> m;
-    int ans = 0;
-    for (int y = 1; y <2 * x && y<=m; y++)
-    {
-        int d = x ^ y;
-        if (d<2*x && d % x == 0 || d % y == 0) // all y those x^y is divisble by x or y till y is 2*x and here we are calulating only whose x^y value is less than 2*x
-            ans++;
+    int n, m, x, k,q;
+    cin >> n;
+    vector<int> a(n);
+    int f1=query(1,n);
+    if(f1==0){
+        cout<<"! IMPOSSIBLE"<<endl;
+        return;
+    }
+    for(int i=1;i<n;i++){
+        a[i]=query(1,i+1);
     }
 
-
-    if ((m - x) >= 2 * x)
-    {
-        ans += (m - x) / x;  // number of (x^y) is multiple of x till m-x 
-        ans--; // before 2x we alredy calculate
+    int j=0;
+    while(a[j]==0) j++;
+    string s(n,'0');
+    for(int i=0;i<j-a[j];i++){
+        s[i]='1';
     }
-    for (int z = m - x + 1; z <= m + x; z++)
-    {
-        if(z%x) continue;
-        int y = x ^ z;
-        if (y>=1 && y<=m) // y value can be between 1 to m, intitally those value generate x^y is greater than 2*x did not counted,so here we can count
-            ans++;
+    for(int i=j;i<n;i++){
+        s[i]=(a[i]>a[i-1]) ? '1':'0';
     }
-    cout << ans;
-    cout << endl;
+    cout<<"! "<<s<<endl;
 }
 
 int32_t main()
@@ -57,7 +61,7 @@ int32_t main()
     // freopen("out", "w", stdout);
 
     cin >> t;
-    // t=1;
+
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";
