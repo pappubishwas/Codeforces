@@ -17,51 +17,75 @@ int binaryLength(int n)
 }
 int mod = 998244353;
 
+// void solve()
+// {
+//     int n;
+//     cin >> n;
+//     vector<int> pap(n + 1);
+//     for (int i = 0; i < n; i++)
+//     {
+//         cin >> pap[i];
+//     }
+//     if (pap[0] == -1 && pap[n - 1] == -1)
+//     {
+//         pap[n - 1] = 0;
+//     }
+//     for (int i = 1; i < n - 1; i++)
+//     {
+//         if (pap[i] == -1)
+//             pap[i] = 0;
+//     }
+//     if (pap[0] == -1)
+//     {
+//         int sum = 0;
+//         for (int i = 2; i < n; i++)
+//         {
+//             sum += pap[i] - pap[i - 1];
+//         }
+//         pap[0] = pap[1] + sum;
+//     }
+//     else if (pap[n - 1] == -1)
+//     {
+//         int sum = 0;
+//         for (int i = 1; i < n - 1; i++)
+//         {
+//             sum += pap[i] - pap[i - 1];
+//         }
+//         pap[n - 1] = pap[n - 2] - sum;
+//     }
+//     int s = 0;
+//     for (int i = 1; i < n ; i++)
+//     {
+//         s += pap[i] - pap[i - 1];
+//     }
+//     cout<<abs(s)<<endl;
+//     for(int i=0;i<n;i++) cout<<pap[i]<<" ";
+//     cout<<endl;
+// }
+
+
+
 void solve()
 {
     int n;
     cin >> n;
-    vector<int> pap(n + 1);
+    vector<int> pap(n);
     for (int i = 0; i < n; i++)
     {
         cin >> pap[i];
+        if((i>0 && i<n-1) && pap[i]==-1) pap[i]=0; 
     }
     if (pap[0] == -1 && pap[n - 1] == -1)
     {
         pap[n - 1] = 0;
-    }
-    for (int i = 1; i < n - 1; i++)
-    {
-        if (pap[i] == -1)
-            pap[i] = 0;
-    }
-    if (pap[0] == -1)
-    {
-        int sum = 0;
-        for (int i = 2; i < n; i++)
-        {
-            sum += pap[i] - pap[i - 1];
-        }
-        pap[0] = pap[1] + sum;
-    }
-    else if (pap[n - 1] == -1)
-    {
-        int sum = 0;
-        for (int i = 1; i < n - 1; i++)
-        {
-            sum += pap[i] - pap[i - 1];
-        }
-        pap[n - 1] = pap[n - 2] - sum;
-    }
-    int s = 0;
-    for (int i = 1; i < n ; i++)
-    {
-        s += pap[i] - pap[i - 1];
-    }
-    cout<<abs(s)<<endl;
-    for(int i=0;i<n;i++) cout<<pap[i]<<" ";
+        pap[0]=0;
+    }else if(pap[0]==-1) pap[0]=pap[n-1];
+    else if(pap[n-1]==-1) pap[n-1]=pap[0];
+    cout<<abs(pap[n-1]-pap[0])<<endl;
+    for(auto x:pap) cout<<x<<" ";
     cout<<endl;
 }
+
 
 int32_t main()
 {

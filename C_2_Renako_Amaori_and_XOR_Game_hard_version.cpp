@@ -17,41 +17,88 @@ int binaryLength(int n)
 }
 int mod = 998244353;
 
-void solve() {
+// void solve() {
+//     int n;
+//     cin >> n;
+
+//     vector<int> a(n), b(n);
+//     for (int i = 0; i < n; i++) cin >> a[i];
+//     for (int i = 0; i < n; i++) cin >> b[i];
+
+//     int diffXor = 0;
+//     for (int i = 0; i < n; i++) diffXor ^= (a[i] ^ b[i]);
+
+//     if (diffXor == 0) {
+//         cout << "Tie\n";
+//         return;
+//     }
+
+//     int msb = 0;
+//     for (int bit = 20; bit >= 0; bit--) {
+//         if ((diffXor >> bit) & 1) {
+//             msb = bit;
+//             break;
+//         }
+//     }
+
+//     int lastIdx = -1;
+//     for (int i = 0; i < n; i++) {
+//         int x = (a[i] >> msb) & 1;
+//         int y = (b[i] >> msb) & 1;
+//         if (x != y) lastIdx = i + 1;
+//     }
+
+//     if (lastIdx & 1) cout << "Ajisai\n";
+//     else cout << "Mai\n";
+// }
+
+void solve()
+{
     int n;
     cin >> n;
 
     vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    for (int i = 0; i < n; i++)
+        cin >> b[i];
 
-    int diffXor = 0;
-    for (int i = 0; i < n; i++) diffXor ^= (a[i] ^ b[i]);
-
-    if (diffXor == 0) {
-        cout << "Tie\n";
-        return;
+    vector<int> bitCount(32);
+    for (int i = 0; i < n; i++)
+    {
+        for (int bit = 31; bit >= 0; bit--) // counting all the bits based on the position
+        {
+            if (a[i] & (1 << bit)) // cheking bit is set or not in the a , if set then count that bit 
+                bitCount[bit]++;
+            if (b[i] & (1 << bit)) // same as be
+                bitCount[bit]++;
+        }
     }
-
-    int msb = 0;
-    for (int bit = 20; bit >= 0; bit--) {
-        if ((diffXor >> bit) & 1) {
+    int msb = -1;
+    for (int bit = 31; bit >= 0; bit--) // finding the MSB bit with odd count , becase even count will not effect the result
+    {
+        if (bitCount[bit] % 2) // msb found with odd count
+        {
             msb = bit;
             break;
         }
     }
-
-    int lastIdx = -1;
-    for (int i = 0; i < n; i++) {
-        int x = (a[i] >> msb) & 1;
-        int y = (b[i] >> msb) & 1;
-        if (x != y) lastIdx = i + 1;
+    if (msb == -1) // all bits are even number of times so tie
+    {
+        cout << "Tie" << endl;
+        return;
     }
-
-    if (lastIdx & 1) cout << "Ajisai\n";
-    else cout << "Mai\n";
+    int last = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (((a[i] >> msb) & 1) != ((b[i] >> msb) & 1)) // finding , who played the last move of the msb same as c1
+            last = i + 1;
+    }
+    if (last % 2) // odd index for ajisai
+        cout << "Ajisai" << endl;
+    else
+        cout << "Mai" << endl;
 }
-
 
 int32_t main()
 {

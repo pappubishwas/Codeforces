@@ -17,6 +17,33 @@ int binaryLength(int n)
 }
 int mod = 998244353;
 
+// void solve() {
+//     int n;
+//     cin >> n;
+
+//     vector<int> p(n), pref(n), suff(n);
+//     for (int i = 0; i < n; ++i) cin >> p[i];
+
+//     pref[0] = p[0];
+//     for (int i = 1; i < n; ++i)
+//         pref[i] = min(pref[i - 1], p[i]); // min value till ith index
+
+//     suff[n - 1] = p[n - 1];
+//     for (int i = n - 2; i >= 0; --i)
+//         suff[i] = max(suff[i + 1], p[i]); // max value till i th index from backword
+
+//     for (int i = 0; i < n - 1; ++i) {
+//         if (pref[i] > suff[i + 1]) { // that mean there is no way to connect between 0-i th index and i+1 to n index, they will be in different group
+//             cout << "No\n";
+//             return;
+//         }
+//     }
+
+//     cout << "Yes\n";
+// }
+
+
+
 void solve() {
     int n;
     cin >> n;
@@ -24,24 +51,24 @@ void solve() {
     vector<int> p(n), pref(n), suff(n);
     for (int i = 0; i < n; ++i) cin >> p[i];
 
-    pref[0] = p[0];
-    for (int i = 1; i < n; ++i)
-        pref[i] = min(pref[i - 1], p[i]); // min value till ith index
-
-    suff[n - 1] = p[n - 1];
-    for (int i = n - 2; i >= 0; --i)
-        suff[i] = max(suff[i + 1], p[i]); // max value till i th index from backword
-
-    for (int i = 0; i < n - 1; ++i) {
-        if (pref[i] > suff[i + 1]) { // that mean there is no way to connect between 0-i th index and i+1 to n index, they will be in different group
-            cout << "No\n";
-            return;
+    set<int> s(p.begin(),p.end());
+    int x=p[0];
+    s.erase(p[0]);
+    for(int i=1;i<n-1;i++){
+        if(p[i]<x){
+            auto it=s.upper_bound(x);
+            if(it==s.end()){
+                cout<<"No"<<endl;
+                return;
+            }
+            x=p[i];
         }
+        s.erase(p[i]);
     }
-
+    if(x==1)
     cout << "Yes\n";
+    else cout<<"No"<<endl;
 }
-
 
 
 int32_t main()

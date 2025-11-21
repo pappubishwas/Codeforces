@@ -17,54 +17,105 @@ int binaryLength(int n)
 }
 int mod = 998244353;
 
+// void solve() {
+//     int n;
+//     cin >> n;
 
-void solve() {
+//     vector<int> p(n);
+//     for (int i = 0; i < n; ++i) cin >> p[i];
+
+//     vector<int> prefMin(n), suffMax(n);
+//     prefMin[0] = p[0];
+//     for (int i = 1; i < n; ++i) prefMin[i] = min(prefMin[i - 1], p[i]);
+
+//     suffMax[n - 1] = p[n - 1];
+//     for (int i = n - 2; i >= 0; --i) suffMax[i] = max(suffMax[i + 1], p[i]);
+
+//     for (int i = 0; i < n - 1; ++i) {
+//         if (prefMin[i] > suffMax[i + 1]) {
+//             cout << "No\n";
+//             return;
+//         }
+//     }
+
+//     cout << "Yes\n";
+
+//     vector<int> segStart;
+//     int curMin = n + 1;
+
+//     for (int i = 0; i < n; ++i) {
+//         if (p[i] < curMin) {
+//             curMin = p[i];
+//             segStart.push_back(i);
+//         }
+//     }
+
+//     for (int j = 0; j < (int)segStart.size(); ++j) {
+//         int L = segStart[j];
+//         int R = (j + 1 == segStart.size()) ? n - 1 : segStart[j + 1] - 1;
+//         int root = p[L];
+
+//         for (int k = L + 1; k <= R; ++k) {
+//             cout << root << " " << p[k] << "\n";
+//         }
+
+//         if (j + 1 < segStart.size()) {
+//             int nxt = segStart[j + 1];
+//             cout << root << " " << suffMax[nxt] << "\n";
+//         }
+//     }
+// }
+
+void solve()
+{
     int n;
     cin >> n;
 
-    vector<int> p(n);
-    for (int i = 0; i < n; ++i) cin >> p[i];
+    vector<int> p(n), pref(n), suff(n);
+    for (int i = 0; i < n; ++i)
+        cin >> p[i];
 
-    vector<int> prefMin(n), suffMax(n);
-    prefMin[0] = p[0];
-    for (int i = 1; i < n; ++i) prefMin[i] = min(prefMin[i - 1], p[i]);
-
-    suffMax[n - 1] = p[n - 1];
-    for (int i = n - 2; i >= 0; --i) suffMax[i] = max(suffMax[i + 1], p[i]);
-
-    for (int i = 0; i < n - 1; ++i) {
-        if (prefMin[i] > suffMax[i + 1]) {
-            cout << "No\n";
-            return;
+    set<int> s(p.begin(), p.end());
+    vector<pair<int, int>> edg;
+    int x = p[0];
+    s.erase(p[0]);
+    auto it1 = s.upper_bound(p[0]);
+    while (it1 != s.end())
+    {
+        edg.push_back({p[0], *it1});
+        it1++;
+    }
+    for (int i = 1; i < n - 1; i++)
+    {
+        if (p[i] < x)
+        {
+            auto it = s.upper_bound(x);
+            if (it == s.end())
+            {
+                cout << "No" << endl;
+                return;
+            }
+            auto it1 = s.upper_bound(p[i]);
+            while (it1 != s.end() && *it1 != *it)
+            {
+                edg.push_back({p[i], *it1});
+                it1++;
+            }
+            x = p[i];
+            edg.push_back({p[i],*it});
+        }
+        s.erase(p[i]);
+    }
+    if (x == 1)
+    {
+        cout << "Yes\n";
+        for (auto it : edg)
+        {
+            cout << it.first << " " << it.second << endl;
         }
     }
-
-    cout << "Yes\n";
-
-    vector<int> segStart;
-    int curMin = n + 1;
-
-    for (int i = 0; i < n; ++i) {
-        if (p[i] < curMin) {
-            curMin = p[i];
-            segStart.push_back(i);
-        }
-    }
-
-    for (int j = 0; j < (int)segStart.size(); ++j) {
-        int L = segStart[j];
-        int R = (j + 1 == segStart.size()) ? n - 1 : segStart[j + 1] - 1;
-        int root = p[L];
-
-        for (int k = L + 1; k <= R; ++k) {
-            cout << root << " " << p[k] << "\n";
-        }
-
-        if (j + 1 < segStart.size()) {
-            int nxt = segStart[j + 1];
-            cout << root << " " << suffMax[nxt] << "\n";
-        }
-    }
+    else
+        cout << "No" << endl;
 }
 
 int32_t main()
