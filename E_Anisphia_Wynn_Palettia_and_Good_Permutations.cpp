@@ -23,22 +23,22 @@ void solve() {
     int n;
     cin >> n;
 
-    vector<int> v2, v3, other;
+    vector<int> v2, v3, other; // logic is , for every others element thier will be two elements from v2 or v3 to make the good permutation
     for (int i = 1; i <= n; i++) {
-        if (i % 2 == 0) v2.push_back(i);
-        else if (i % 3 == 0) v3.push_back(i);
-        else other.push_back(i);
+        if (i % 2 == 0) v2.push_back(i); // n/2 numbers
+        else if (i % 3 == 0) v3.push_back(i); // n/3 -n/6 numbers
+        else other.push_back(i); // n- n/2 - (n/3 - n/6) = n/3 numbers
     }
 
     vector<int> ans;
 
-    while (v2.size() >= 2 && !other.empty()) {
+    while (v2.size() >= 2 && !other.empty()) { // for each two pair with one others
         ans.push_back(v2.back()); v2.pop_back();
         ans.push_back(v2.back()); v2.pop_back();
         ans.push_back(other.back()); other.pop_back();
     }
 
-    while (v3.size() >= 2 && !other.empty()) {
+    while (v3.size() >= 2 && !other.empty()) { // for each two pair with one others
         ans.push_back(v3.back()); v3.pop_back();
         ans.push_back(v3.back()); v3.pop_back();
         ans.push_back(other.back()); other.pop_back();
