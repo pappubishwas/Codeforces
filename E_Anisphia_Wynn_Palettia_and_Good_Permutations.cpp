@@ -23,7 +23,7 @@ void solve() {
     int n;
     cin >> n;
 
-    vector<int> v2, v3, other; // logic is , for every others element thier will be two elements from v2 or v3 to make the good permutation
+    vector<int> v2, v3, other; //  for every others element thier will be two elements from v2 or v3 to make the good permutation
     for (int i = 1; i <= n; i++) {
         if (i % 2 == 0) v2.push_back(i); // n/2 numbers
         else if (i % 3 == 0) v3.push_back(i); // n/3 -n/6 numbers
