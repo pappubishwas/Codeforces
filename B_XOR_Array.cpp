@@ -16,27 +16,19 @@ int rndRange(int l, int r) { return RNG() % (r - l + 1) + l; }
 
 void Solve()
 {
-    int n, k;
-    cin >> n ;
-    vector<int> pap(n),un;
-    set<int> mp;
-    for(auto& x:pap){
-        cin>>x;
-        mp.insert(x);
+    int n, k,l,r;
+    cin >> n >>l>>r;
+    vector<int>pre(n+1);
+    for(int i=0;i<=n;i++)
+    {
+        pre[i]=i; // prefix xor of all elements from 0 to i is i, all prefix xor are different
     }
-    int color=mp.size();
-    // while(true){
-    //     if(mp.count(color)){
-    //         cout<<color<<endl;
-    //         return ;
-    //     }
-    //     mp.insert(color);
-    //     color++;
-    // }
+    pre[r]=pre[l-1]; // l-r subarray prefix xor will be zero, only if prefix xor of rth and l-1th are equal
 
-    cout<<*mp.lower_bound(color)<<endl;
-    
-
+    for(int i=1;i<=n;i++){
+        cout<<(pre[i]^pre[i-1])<<" "; // p0,p1, p2 p3 .... a1=p1^p0 , a2=p2^p1 so on, because p1=p0^a1, we know x^y=z then z^y=x or z^x=y
+    }
+    cout<<endl;
 }
 
 int32_t main()

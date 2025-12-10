@@ -16,27 +16,15 @@ int rndRange(int l, int r) { return RNG() % (r - l + 1) + l; }
 
 void Solve()
 {
-    int n, k;
-    cin >> n ;
-    vector<int> pap(n),un;
-    set<int> mp;
-    for(auto& x:pap){
-        cin>>x;
-        mp.insert(x);
+    int n, k,l,r,p;
+    cin>>n>>k>>p;
+    k=abs(k);
+    int res=k/p +(k%p!=0);
+    if(res<=n){
+        cout<<res<<endl;
+    }else{
+        cout<<-1<<endl;
     }
-    int color=mp.size();
-    // while(true){
-    //     if(mp.count(color)){
-    //         cout<<color<<endl;
-    //         return ;
-    //     }
-    //     mp.insert(color);
-    //     color++;
-    // }
-
-    cout<<*mp.lower_bound(color)<<endl;
-    
-
 }
 
 int32_t main()
