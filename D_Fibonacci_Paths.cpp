@@ -15,55 +15,6 @@ int rndRange(int l, int r) { return RNG() % (r - l + 1) + l; }
 
 const int MOD = 998244353;
 
-int dfs(
-    int edge_idx,
-    vector<int> &a,
-    vector<pair<int, int>> &edges,
-    vector<vector<pair<int, pair<int, int>>>> &adj,
-    vector<int> &dp,
-    vector<map<int, int>> &tan)
-{
-    if (dp[edge_idx] != -1)
-        return dp[edge_idx];
-
-    int u = edges[edge_idx].first;
-    int v = edges[edge_idx].second;
-
-    int target = a[u] + a[v];
-
-    if (target > INF)
-        return dp[edge_idx] = 1;
-
-    if (tan[v].count(target))
-    {
-        int cached = tan[v][target];
-        return dp[edge_idx] = (1 + cached) % MOD;
-    }
-
-    int cur = 0;
-    auto &vec = adj[v];
-    
-    auto it = lower_bound(
-        vec.begin(),
-        vec.end(),
-        make_pair(target, make_pair(-1, -1)),
-        [](const auto &L, const auto &R)
-        {
-            return L.first < R.first;
-        });
-
-    while (it != vec.end() && it->first == target)
-    {
-        int next_edge = it->second.second;
-        cur = (cur + dfs(next_edge, a, edges, adj, dp, tan)) % MOD;
-        it++;
-    }
-
-    tan[v][target] = cur;
-
-    return dp[edge_idx] = (1 + cur) % MOD;
-}
-
 void Solve()
 {
     int n, m;
@@ -73,35 +24,32 @@ void Solve()
     for (int i = 1; i <= n; i++)
         cin >> a[i];
 
-    vector<pair<int, int>> edges(m);
-    vector<vector<pair<int, pair<int, int>>>> adj(n + 1);
-    vector<int> dp(m, -1);
-    vector<map<int, int>> tan(n + 1);
+    vector<map<int,int>> dp(n+1);
+    vector<array<int,3>> ed;
 
     for (int i = 0; i < m; i++)
     {
         int u, v;
         cin >> u >> v;
-        edges[i] = {u, v};
-        adj[u].push_back({a[v], {v, i}});
+        ed.push_back({a[u]+a[v],u,v});
+        dp[v][a[u]+a[v]]+=1;  //count of ending at v with sum of two consecutive node a[u]+a[v]
     }
 
-    for (int i = 1; i <= n; i++)
-    {
-        sort(adj[i].begin(), adj[i].end(),
-             [](const auto &L, const auto &R)
-             {
-                 return L.first < R.first;
-             });
-    }
+    sort(ed.begin(),ed.end()); // those pair value are low they have possiblity to create fibo sequence with creater value 
 
-    int ans = 0;
-    for (int i = 0; i < m; i++)
-    {
-        int t=dfs(i, a, edges, adj, dp, tan)%MOD;
-        ans = (ans + t) % MOD;
+    for(auto [w,u,v]:ed){
+        // u->v
+        if(dp[u].find(a[v])!=dp[u].end()){ // for node v if want to create sequence with u those are ending at node u with sum a[v] those will create the simple path
+            dp[v][a[u]+a[v]]+=dp[u][a[v]];
+            dp[v][a[u]+a[v]]%=MOD;
+        }
     }
-
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        for(auto [x,y]:dp[i]){
+            ans=(ans+y)%MOD;
+        }
+    }
     cout << ans << "\n";
 }
 
