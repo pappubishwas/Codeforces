@@ -8,12 +8,21 @@ void solve()
 {
     int n,odd=0;
     cin >> n;
-    int a[n];
+    int pap[n];
     for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]%2==1) odd++;
+        cin>>pap[i];
     }
-    if(odd%2==0) cout<<"YES"<<endl;
+    bool flag=true;
+    for(int i=0;i<n;i++){
+        int v=pap[i]+1;
+        for(int j=0;j<n;j++){
+            if(v==pap[j]){
+                int d=abs(i-j);
+                if(d%2==0) flag=false;
+            }
+        }
+    }
+    if(flag) cout<<"YES"<<endl;
     else cout<<"NO"<<endl;
 }
 int main()
