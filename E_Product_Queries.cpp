@@ -57,67 +57,85 @@ public:
 };
 class SegmentTree
 {
-    public:
+public:
     int size;
     vector<int> tree;
     SegmentTree(int n)
     {
-        size= 4*n;
+        size = 4 * n;
         tree.assign(size, 0);
     }
-    void build(int idx,int l,int r,vector<int> &a)
+    void build(int idx, int l, int r, vector<int> &a)
     {
-        if(l==r)
+        if (l == r)
         {
-            tree[idx]=a[l];
+            tree[idx] = a[l];
             return;
         }
-        int mid=(l+r)/2;
-        build(2*idx+1,l,mid,a);
-        build(2*idx+2,mid+1,r,a);
-        tree[idx]=tree[2*idx+1]^tree[2*idx+2];
+        int mid = (l + r) / 2;
+        build(2 * idx + 1, l, mid, a);
+        build(2 * idx + 2, mid + 1, r, a);
+        tree[idx] = tree[2 * idx + 1] ^ tree[2 * idx + 2];
     }
-    int query(int idx,int l,int r,int i,int val,int& ans){
-        if(l==r && i==l){
+    int query(int idx, int l, int r, int i, int val, int &ans)
+    {
+        if (l == r && i == l)
+        {
             return val;
         }
-        int m=(l+r)/2;
-        if(m>=i){
-            int left = query(2*idx+1,l,m,i,val,ans);
-            int right = tree[2*idx+2];
-            if(right>left){
-                ans+=(r-m);
+        int m = (l + r) / 2;
+        if (m >= i)
+        {
+            int left = query(2 * idx + 1, l, m, i, val, ans);
+            int right = tree[2 * idx + 2];
+            if (right > left)
+            {
+                ans += (r - m);
             }
-            return left^right;
-        }else{
-            int right=query(2*idx+2,m+1,r,i,val,ans);
-            int left=tree[2*idx+1];
-            if(left>=right){
-                ans+=(m-l+1);
+            return left ^ right;
+        }
+        else
+        {
+            int right = query(2 * idx + 2, m + 1, r, i, val, ans);
+            int left = tree[2 * idx + 1];
+            if (left >= right)
+            {
+                ans += (m - l + 1);
             }
-            return left^right;
+            return left ^ right;
         }
     }
 };
+
 void solve()
 {
-    int n,m,q,k;
-    cin>>n>>q;
-    vector<int> a((1<<n),0);
-    for(int i=0;i<(1<<n);i++){
-        cin>>a[i];
+    int n, m, s, x, q, k;
+    cin >> n;
+    vector<int> pap(n),tan(n),ans(n+1,n+10);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> pap[i];
+        ans[pap[i]]=1;
     }
-    SegmentTree st(1<<n);
-    st.build(0,0,(1<<n)-1,a);
-    while(q--){
-        int idx,val;
-        cin>>idx>>val;
-        int ans=0;
-        st.query(0,0,(1<<n)-1,idx-1,val,ans);
-        cout<<ans<<endl;
+    sort(pap.begin(),pap.end());
+    for(int i=0;i<n;i++){
+        if(pap[i]==1 || (i>0 && pap[i-1]==pap[i])) continue;
+        int val=2*pap[i],div=2;
+        while(val<=n){
+            ans[val]=min(ans[val],ans[div]+1);
+            div++;
+            val=pap[i]*div;
+        }
     }
+    for(int i=1;i<=n;i++){
+        if(ans[i]>n){
+            cout<<-1<<" ";
+        }else{
+            cout<<ans[i]<<" ";
+        }
+    }
+    cout<<endl;
 }
-
 
 int32_t main()
 {
