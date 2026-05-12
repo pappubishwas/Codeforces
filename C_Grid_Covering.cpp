@@ -7,12 +7,9 @@ mt19937_64 RNG(chrono::steady_clock::now().time_since_epoch().count());
 
 void Solve() 
 {
-    int n,k;
-    cin>>n>>k;
-    vector<int> a(n);
-    for(int i=0;i<n;i++) cin>>a[i];
-    int sum=accumulate(a.begin(),a.end(),0LL);
-    if((sum%2) || (k*n)%2==0){
+    int n,m,a,b;
+    cin>>n>>m>>a>>b;
+    if(__gcd(n,a)==1 && __gcd(m,b)==1 && __gcd(n, m) <= 2){
         cout<<"YES"<<endl;
     }else{
         cout<<"NO"<<endl;
